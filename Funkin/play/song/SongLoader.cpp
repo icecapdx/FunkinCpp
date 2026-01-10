@@ -1,6 +1,7 @@
 #include "SongLoader.h"
 #include "Conductor.h"
 #include <iostream>
+#include <filesystem>
 
 SwagSong SongLoader::loadSong(const std::string& dataPath) {
     std::string songName, folder, baseSongName;
@@ -16,7 +17,24 @@ SwagSong SongLoader::loadSong(const std::string& dataPath) {
     return song;
 }
 
-void SongLoader::loadSongAudio(const std::string& songName, flixel::FlxSound*& inst, flixel::FlxSound*& vocals, const SwagSong& song) {
+flixel::FlxSound* SongLoader::tryLoadSound(const std::string& path) {
+    if (!std::filesystem::exists(path)) {
+        return nullptr;
+    }
+    
+    auto* sound = new flixel::FlxSound();
+    if (!sound->loadAsChunk(path, false, false)) {
+        delete sound;
+        return nullptr;
+    }
+    sound->setVolume(1.0f);
+    sound->stop();
+    return sound;
+}
+
+void SongLoader::loadSongAudio(const std::string& songName, flixel::FlxSound*& inst, 
+                               flixel::FlxSound*& vocalsPlayer, flixel::FlxSound*& vocalsOpponent,
+                               const SwagSong& song) {
     std::string baseSongName = songName;
     
     if (baseSongName.length() >= 5 && (baseSongName.substr(baseSongName.length() - 5) == "-easy" ||
@@ -28,39 +46,83 @@ void SongLoader::loadSongAudio(const std::string& songName, flixel::FlxSound*& i
     }
     
     std::string soundExt = ".ogg";
-    std::string vocalsPath = song.needsVoices ? "assets/songs/" + baseSongName + "/Voices" + soundExt : "";
-    std::string instPath = "assets/songs/" + baseSongName + "/Inst" + soundExt;
+    std::string songsPath = "assets/songs/" + baseSongName + "/";
     
     if (inst != nullptr) {
         delete inst;
         inst = nullptr;
     }
-    inst = new flixel::FlxSound();
-    if (!inst->loadAsChunk(instPath, false, false)) {
-        std::cerr << "Failed to preload instrumental: " << instPath << std::endl;
-        delete inst;
-        inst = nullptr;
+    if (vocalsPlayer != nullptr) {
+        delete vocalsPlayer;
+        vocalsPlayer = nullptr;
     }
-    if (inst) {
-        inst->setChannel(1);
-        inst->setVolume(1.0f);
-        inst->stop();
+    if (vocalsOpponent != nullptr) {
+        delete vocalsOpponent;
+        vocalsOpponent = nullptr;
     }
     
-    if (!vocalsPath.empty()) {
-        if (vocals != nullptr) {
-            delete vocals;
-            vocals = nullptr;
+    std::string instPath = songsPath + "Inst" + soundExt;
+    inst = tryLoadSound(instPath);
+    if (inst) {
+        inst->setChannel(1);
+    } else {
+        std::cerr << "Failed to preload instrumental: " << instPath << std::endl;
+    }
+    
+    if (!song.needsVoices) {
+        return;
+    }
+    
+    if (song.isVSlice) {
+        std::string playerChar = song.player1;
+        std::string opponentChar = song.player2;
+        
+        std::string playerVocalsPath = songsPath + "Voices-" + playerChar + soundExt;
+        vocalsPlayer = tryLoadSound(playerVocalsPath);
+        
+        if (!vocalsPlayer && playerChar.length() > 9 && 
+            playerChar.substr(playerChar.length() - 9) == "-playable") {
+            std::string baseChar = playerChar.substr(0, playerChar.length() - 9);
+            playerVocalsPath = songsPath + "Voices-" + baseChar + soundExt;
+            vocalsPlayer = tryLoadSound(playerVocalsPath);
         }
-        vocals = new flixel::FlxSound();
-        if (!vocals->loadAsChunk(vocalsPath, false, false)) {
-            std::cerr << "Failed to preload vocals: " << vocalsPath << std::endl;
-            delete vocals;
-            vocals = nullptr;
+        
+        if (vocalsPlayer) {
+            vocalsPlayer->setChannel(2);
+            std::cerr << "Loaded player vocals: " << playerVocalsPath << std::endl;
+        }
+        
+        std::string opponentVocalsPath = songsPath + "Voices-" + opponentChar + soundExt;
+        vocalsOpponent = tryLoadSound(opponentVocalsPath);
+        
+        if (!vocalsOpponent && opponentChar.length() > 9 && 
+            opponentChar.substr(opponentChar.length() - 9) == "-playable") {
+            std::string baseChar = opponentChar.substr(0, opponentChar.length() - 9);
+            opponentVocalsPath = songsPath + "Voices-" + baseChar + soundExt;
+            vocalsOpponent = tryLoadSound(opponentVocalsPath);
+        }
+        
+        if (vocalsOpponent) {
+            vocalsOpponent->setChannel(3);
+            std::cerr << "Loaded opponent vocals: " << opponentVocalsPath << std::endl;
+        }
+        
+        if (!vocalsPlayer && !vocalsOpponent) {
+            std::string legacyVocalsPath = songsPath + "Voices" + soundExt;
+            vocalsPlayer = tryLoadSound(legacyVocalsPath);
+            if (vocalsPlayer) {
+                vocalsPlayer->setChannel(2);
+                std::cerr << "Fell back to legacy vocals: " << legacyVocalsPath << std::endl;
+            }
+        }
+    } else {
+        std::string vocalsPath = songsPath + "Voices" + soundExt;
+        vocalsPlayer = tryLoadSound(vocalsPath);
+        if (vocalsPlayer) {
+            vocalsPlayer->setChannel(2);
+            std::cerr << "Loaded vocals: " << vocalsPath << std::endl;
         } else {
-            vocals->setChannel(0);
-            vocals->setVolume(1.0f);
-            vocals->stop();
+            std::cerr << "Failed to preload vocals: " << vocalsPath << std::endl;
         }
     }
 }

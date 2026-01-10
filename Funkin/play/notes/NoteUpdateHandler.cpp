@@ -13,7 +13,7 @@ NoteUpdateHandler::NoteUpdateHandler(NoteManager* noteManager, NoteHitHandler* n
 {
 }
 
-void NoteUpdateHandler::updateNotes(float elapsed, Character* boyfriend, flixel::FlxSound* vocals) {
+void NoteUpdateHandler::updateNotes(float elapsed, Character* boyfriend, flixel::FlxSound* vocalsPlayer) {
     if (!noteManager) return;
     
     noteManager->updateSpawning(Conductor::songPosition);
@@ -33,7 +33,7 @@ void NoteUpdateHandler::updateNotes(float elapsed, Character* boyfriend, flixel:
                 ScriptManager::getInstance()->callAll(ScriptCallback::ON_NOTE_MISS, {note->noteData});
                 
                 if (gameplayManager && boyfriend) {
-                    gameplayManager->noteMiss(note->noteData, boyfriend, vocals);
+                    gameplayManager->noteMiss(note->noteData, boyfriend, vocalsPlayer);
                 }
                 if (noteHitHandler) {
                     noteHitHandler->incrementMisses();

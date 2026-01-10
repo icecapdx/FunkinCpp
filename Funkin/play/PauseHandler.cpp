@@ -10,7 +10,8 @@ PauseHandler::PauseHandler()
 {
 }
 
-void PauseHandler::update(float elapsed, flixel::FlxSound* inst, flixel::FlxSound* vocals,
+void PauseHandler::update(float elapsed, flixel::FlxSound* inst, 
+                          flixel::FlxSound* vocalsPlayer, flixel::FlxSound* vocalsOpponent,
                           float& songPosition, unsigned int& musicStartTicks,
                           flixel::FlxSubState*& subState,
                           std::function<void(flixel::FlxSubState*)> openSubStateFunc,
@@ -25,8 +26,11 @@ void PauseHandler::update(float elapsed, flixel::FlxSound* inst, flixel::FlxSoun
         if (inst && inst->paused) {
             inst->resume();
         }
-        if (vocals && vocals->paused) {
-            vocals->resume();
+        if (vocalsPlayer && vocalsPlayer->paused) {
+            vocalsPlayer->resume();
+        }
+        if (vocalsOpponent && vocalsOpponent->paused) {
+            vocalsOpponent->resume();
         }
     }
     
@@ -39,8 +43,11 @@ void PauseHandler::update(float elapsed, flixel::FlxSound* inst, flixel::FlxSoun
         if (inst) {
             inst->pause();
         }
-        if (vocals) {
-            vocals->pause();
+        if (vocalsPlayer) {
+            vocalsPlayer->pause();
+        }
+        if (vocalsOpponent) {
+            vocalsOpponent->pause();
         }
         
         if (musicStartTicks > 0) {

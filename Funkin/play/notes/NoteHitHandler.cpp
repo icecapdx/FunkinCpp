@@ -11,7 +11,7 @@
 NoteHitHandler::NoteHitHandler(Controls* controls, NoteManager* noteManager,
                                Strumline* playerStrumline, Character* boyfriend,
                                HealthBar* healthBar, PopUpStuff* popUpStuff,
-                               flixel::FlxText* scoreText, flixel::FlxSound* vocals,
+                               flixel::FlxText* scoreText, flixel::FlxSound* vocalsPlayer,
                                flixel::FlxCamera* camHUD)
     : controls(controls)
     , noteManager(noteManager)
@@ -20,7 +20,7 @@ NoteHitHandler::NoteHitHandler(Controls* controls, NoteManager* noteManager,
     , healthBar(healthBar)
     , popUpStuff(popUpStuff)
     , scoreText(scoreText)
-    , vocals(vocals)
+    , vocalsPlayer(vocalsPlayer)
     , camHUD(camHUD)
     , score(0)
     , misses(0)
@@ -242,8 +242,8 @@ void NoteHitHandler::goodNoteHit(NoteSprite* note) {
             note->isHolding = true;
         }
         
-        if (vocals) {
-            vocals->setVolume(1.0f);
+        if (vocalsPlayer) {
+            vocalsPlayer->setVolume(1.0f);
         }
         
         if (note->noteData >= 0 && note->noteData < 4) {

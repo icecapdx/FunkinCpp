@@ -50,6 +50,7 @@ public:
     static int campaignScore;
     static std::vector<CachedNoteData> cachedNoteData;
     static std::string cachedSongName;
+    static int cachedDifficulty;
 
     PlayState();
     ~PlayState() override;
@@ -88,7 +89,8 @@ public:
 private:
     flixel::FlxCamera* camGame;
     flixel::FlxCamera* camHUD;
-    flixel::FlxSound* vocals;
+    flixel::FlxSound* vocalsPlayer;
+    flixel::FlxSound* vocalsOpponent;
     Stage* stage;
     Character* boyfriend;
     Character* gf;
