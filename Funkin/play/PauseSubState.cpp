@@ -214,7 +214,10 @@ void PauseSubState::update(float elapsed) {
             regenMenu();
         }
         else if (daSelected == "RESTART SONG") {
-            flixel::FlxG::game->switchState(new PlayState());
+            close();
+            if (PlayState::instance) {
+                PlayState::instance->restartSong();
+            }
         }
         else if (daSelected == "EXIT TO MENU") {
             PlayState::seenCutscene = false;

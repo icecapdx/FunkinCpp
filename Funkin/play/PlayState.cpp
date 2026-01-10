@@ -534,6 +534,72 @@ void PlayState::startCountdown() {
     Conductor::songPosition = -(Conductor::crochet * 5);
 }
 
+void PlayState::restartSong() {
+    if (inst) {
+        inst->stop();
+    }
+    if (vocals) {
+        vocals->stop();
+    }
+    
+    Conductor::songPosition = 0;
+    curStep = 0;
+    curBeat = 0;
+    startingSong = true;
+    startedCountdown = false;
+    musicStartTicks = 0;
+    
+    if (healthBar) {
+        healthBar->setHealth(1.0f);
+    }
+    
+    if (boyfriend) {
+        boyfriend->stunned = false;
+    }
+    if (dad) {
+        dad->stunned = false;
+    }
+    if (gf) {
+        gf->stunned = false;
+    }
+    
+    if (noteHitHandler) {
+        noteHitHandler->setScore(0);
+        noteHitHandler->setMisses(0);
+        noteHitHandler->setCombo(0);
+        noteHitHandler->setSicks(0);
+        noteHitHandler->setGoods(0);
+        noteHitHandler->setBads(0);
+        noteHitHandler->setShits(0);
+        noteHitHandler->updateScore();
+    }
+    
+    if (noteManager) {
+        noteManager->animateNotesDownward();
+        noteManager->clearWithoutPooling();
+        if (!cachedNoteData.empty() && cachedSongName == curSong) {
+            noteManager->regenerateFromCache();
+        } else {
+            noteManager->generateNotes(SONG);
+            cachedNoteData = noteManager->getCachedNotes();
+            cachedSongName = curSong;
+        }
+    }
+    
+    if (cameraManager) {
+        cameraManager->setCamZooming(false);
+    }
+    
+    if (popUpStuff) {
+        popUpStuff->clear();
+    }
+    
+    persistentUpdate = true;
+    persistentDraw = true;
+    
+    startCountdown();
+}
+
 void PlayState::draw() {
     if (renderer) {
         renderer->draw(stage, gf, dad, boyfriend, opponentStrumline, playerStrumline,

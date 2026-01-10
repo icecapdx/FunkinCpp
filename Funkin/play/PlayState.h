@@ -62,6 +62,7 @@ public:
     void startSong();
     void endSong();
     void startCountdown();
+    void restartSong();
     void updateCameraZoom();
     void setupHUDCamera();
     void beatHit();

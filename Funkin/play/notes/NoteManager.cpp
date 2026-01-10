@@ -1,5 +1,7 @@
 #include "NoteManager.h"
+#include "../../game/GameConfig.h"
 #include <flixel/FlxG.h>
+#include <flixel/tweens/FlxTweenUtil.h>
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -123,9 +125,11 @@ NoteSprite* NoteManager::getPooledNote(float strumTime, int noteType, float sust
     return note;
 }
 
-void NoteManager::returnToPool(NoteSprite* note) {
+void NoteManager::returnToPool(NoteSprite* note, bool hideImmediately) {
     if (note) {
-        note->visible = false;
+        if (hideImmediately) {
+            note->visible = false;
+        }
         notePool.push_back(note);
     }
 }
@@ -170,4 +174,44 @@ void NoteManager::clear() {
         returnToPool(note);
     }
     unspawnedNotes.clear();
+}
+
+void NoteManager::clearWithoutPooling() {
+    activeNotes.clear();
+    unspawnedNotes.clear();
+}
+
+void NoteManager::animateNotesDownward() {
+    float screenHeight = static_cast<float>(flixel::FlxG::height);
+    float duration = 0.5f;
+    bool isDownscroll = GameConfig::getInstance()->isDownscroll();
+    
+    animatingNotes.clear();
+    for (auto note : activeNotes) {
+        if (note && note->visible) {
+            animatingNotes.push_back(note);
+        }
+    }
+    
+    // me when i have too mny notes so igita kill dem all
+    if (animatingNotes.size() > 100) {
+        for (auto note : animatingNotes) {
+            if (note) {
+                note->visible = false;
+            }
+        }
+        animatingNotes.clear();
+        return;
+    }
+    
+    for (auto note : animatingNotes) {
+        if (!note) continue;
+        float targetY = isDownscroll ? (0.0f - note->height) : (screenHeight + note->y);
+        auto cleanupCallback = [note]() {
+            if (note) {
+                note->visible = false;
+            }
+        };
+        flixel::tweens::tweenY(note, targetY, duration, flixel::tweens::FlxEase::expoIn, cleanupCallback);
+    }
 }
