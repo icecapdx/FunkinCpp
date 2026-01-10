@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 #include "../../game/Section.h"
 
 struct SwagSong {
@@ -14,6 +15,7 @@ struct SwagSong {
     std::string gfVersion = "gf";
     std::string stage = "";
     bool validScore = false;
+    bool isVSlice = false;
 };
 
 class Song {

@@ -27,6 +27,7 @@ int PlayState::storyWeek = 0;
 int PlayState::campaignScore = 0;
 std::vector<CachedNoteData> PlayState::cachedNoteData;
 std::string PlayState::cachedSongName;
+int PlayState::cachedDifficulty = -1;
 
 const char* PlayState::NOTE_STYLES[] = {"purple", "blue", "green", "red"};
 const char* PlayState::NOTE_DIRS[] = {"LEFT", "DOWN", "UP", "RIGHT"};
@@ -34,7 +35,8 @@ const char* PlayState::NOTE_DIRS[] = {"LEFT", "DOWN", "UP", "RIGHT"};
 PlayState::PlayState() {
     instance = this;
     inst = nullptr;
-    vocals = nullptr;
+    vocalsPlayer = nullptr;
+    vocalsOpponent = nullptr;
     camGame = nullptr;
     camHUD = nullptr;
     stage = nullptr;
@@ -77,9 +79,13 @@ PlayState::PlayState() {
 PlayState::~PlayState() {
     ScriptManager::getInstance()->clear();
     
-    if (vocals != nullptr) {
-        delete vocals;
-        vocals = nullptr;
+    if (vocalsPlayer != nullptr) {
+        delete vocalsPlayer;
+        vocalsPlayer = nullptr;
+    }
+    if (vocalsOpponent != nullptr) {
+        delete vocalsOpponent;
+        vocalsOpponent = nullptr;
     }
     if (inst != nullptr) {
         delete inst;
@@ -203,7 +209,7 @@ void PlayState::create() {
         } else if (storyDifficulty == 2) {
             curSong += "-hard";
         }
-        SongLoader::loadSongAudio(curSong, inst, vocals, SONG);
+        SongLoader::loadSongAudio(curSong, inst, vocalsPlayer, vocalsOpponent, SONG);
     }
     
     if (!SONG.validScore) {
@@ -292,13 +298,14 @@ void PlayState::create() {
     std::string currentSongName = SONG.song;
     std::transform(currentSongName.begin(), currentSongName.end(), currentSongName.begin(), ::tolower);
     
-    if (!cachedNoteData.empty() && cachedSongName == currentSongName) {
+    if (!cachedNoteData.empty() && cachedSongName == currentSongName && cachedDifficulty == storyDifficulty) {
         noteManager->setCachedNotes(cachedNoteData);
         noteManager->regenerateFromCache();
     } else {
         noteManager->generateNotes(SONG);
         cachedNoteData = noteManager->getCachedNotes();
         cachedSongName = currentSongName;
+        cachedDifficulty = storyDifficulty;
     }
     
     float strumYPos = GameConfig::getInstance()->isDownscroll() ? (windowHeight - 150.0f) : 50.0f;
@@ -311,8 +318,8 @@ void PlayState::create() {
     opponentStrumline->fadeInArrows();
     playerStrumline->fadeInArrows();
     
-    noteHitHandler = new NoteHitHandler(GameConfig::getInstance()->controls, noteManager, playerStrumline, boyfriend, healthBar, popUpStuff, scoreText, vocals, camHUD);
-    gameplayManager = new GameplayManager(noteManager, opponentStrumline, dad, gf, healthBar, vocals, SONG);
+    noteHitHandler = new NoteHitHandler(GameConfig::getInstance()->controls, noteManager, playerStrumline, boyfriend, healthBar, popUpStuff, scoreText, vocalsPlayer, camHUD);
+    gameplayManager = new GameplayManager(noteManager, opponentStrumline, dad, gf, healthBar, vocalsOpponent, SONG);
     noteUpdateHandler = new NoteUpdateHandler(noteManager, noteHitHandler, gameplayManager, gf);
     pauseHandler = new PauseHandler();
     renderer = new PlayStateRenderer();
@@ -327,7 +334,7 @@ void PlayState::update(float elapsed) {
     ScriptManager::getInstance()->updateScriptObjects(elapsed);
     
     if (pauseHandler) {
-        pauseHandler->update(elapsed, inst, vocals, Conductor::songPosition, musicStartTicks, subState,
+        pauseHandler->update(elapsed, inst, vocalsPlayer, vocalsOpponent, Conductor::songPosition, musicStartTicks, subState,
                             [this](flixel::FlxSubState* s) { this->openSubState(s); },
                             [this]() { this->closeSubState(); });
     }
@@ -343,8 +350,11 @@ void PlayState::update(float elapsed) {
         if (inst) {
             inst->update(elapsed);
         }
-        if (vocals) {
-            vocals->update(elapsed);
+        if (vocalsPlayer) {
+            vocalsPlayer->update(elapsed);
+        }
+        if (vocalsOpponent) {
+            vocalsOpponent->update(elapsed);
         }
         
         if (popUpStuff) {
@@ -380,8 +390,11 @@ void PlayState::update(float elapsed) {
                 if (inst) {
                     inst->stop();
                 }
-                if (vocals) {
-                    vocals->stop();
+                if (vocalsPlayer) {
+                    vocalsPlayer->stop();
+                }
+                if (vocalsOpponent) {
+                    vocalsOpponent->stop();
                 }
                 
                 openSubState(new GameOverSubState(boyfriend->x, boyfriend->y, camGame));
@@ -395,7 +408,7 @@ void PlayState::update(float elapsed) {
         }
 
         if (noteUpdateHandler) {
-            noteUpdateHandler->updateNotes(elapsed, boyfriend, vocals);
+            noteUpdateHandler->updateNotes(elapsed, boyfriend, vocalsPlayer);
         }
 
         if (startedCountdown && startingSong && countdown) {
@@ -435,8 +448,11 @@ void PlayState::startSong() {
         inst->play();
     }
     
-    if (vocals) {
-        vocals->play();
+    if (vocalsPlayer) {
+        vocalsPlayer->play();
+    }
+    if (vocalsOpponent) {
+        vocalsOpponent->play();
     }
 }
 
@@ -449,8 +465,11 @@ void PlayState::endSong() {
     if (inst) {
         inst->setVolume(0.0f);
     }
-    if (vocals) {
-        vocals->setVolume(0.0f);
+    if (vocalsPlayer) {
+        vocalsPlayer->setVolume(0.0f);
+    }
+    if (vocalsOpponent) {
+        vocalsOpponent->setVolume(0.0f);
     }
     
     int songScore = noteHitHandler ? noteHitHandler->getScore() : 0;
@@ -502,8 +521,11 @@ void PlayState::endSong() {
                 if (inst) {
                     inst->stop();
                 }
-                if (vocals) {
-                    vocals->stop();
+                if (vocalsPlayer) {
+                    vocalsPlayer->stop();
+                }
+                if (vocalsOpponent) {
+                    vocalsOpponent->stop();
                 }
                 
                 SONG = Song::loadFromJson(nextSong + difficulty, nextSong);
@@ -538,8 +560,11 @@ void PlayState::restartSong() {
     if (inst) {
         inst->stop();
     }
-    if (vocals) {
-        vocals->stop();
+    if (vocalsPlayer) {
+        vocalsPlayer->stop();
+    }
+    if (vocalsOpponent) {
+        vocalsOpponent->stop();
     }
     
     Conductor::songPosition = 0;
@@ -577,12 +602,13 @@ void PlayState::restartSong() {
     if (noteManager) {
         noteManager->animateNotesDownward();
         noteManager->clearWithoutPooling();
-        if (!cachedNoteData.empty() && cachedSongName == curSong) {
+        if (!cachedNoteData.empty() && cachedSongName == curSong && cachedDifficulty == storyDifficulty) {
             noteManager->regenerateFromCache();
         } else {
             noteManager->generateNotes(SONG);
             cachedNoteData = noteManager->getCachedNotes();
             cachedSongName = curSong;
+            cachedDifficulty = storyDifficulty;
         }
     }
     

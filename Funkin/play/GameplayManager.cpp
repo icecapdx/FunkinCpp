@@ -5,13 +5,13 @@
 
 GameplayManager::GameplayManager(NoteManager* noteManager, Strumline* opponentStrumline,
                                  Character* dad, Character* gf, HealthBar* healthBar,
-                                 flixel::FlxSound* vocals, const SwagSong& song)
+                                 flixel::FlxSound* vocalsOpponent, const SwagSong& song)
     : noteManager(noteManager)
     , opponentStrumline(opponentStrumline)
     , dad(dad)
     , gf(gf)
     , healthBar(healthBar)
-    , vocals(vocals)
+    , vocalsOpponent(vocalsOpponent)
     , song(song)
     , missSound1(nullptr)
     , missSound2(nullptr)
@@ -47,8 +47,8 @@ void GameplayManager::handleOpponentNotes(float deltaTime) {
                 if (timeDiff <= 45.0f && timeDiff >= -Conductor::safeZoneOffset) {
                     note->canBeHit = true;
                     
-                    if (vocals && song.needsVoices) {
-                        vocals->setVolume(1.0f);
+                    if (vocalsOpponent && song.needsVoices) {
+                        vocalsOpponent->setVolume(1.0f);
                     }
                     
                     if (opponentStrumline) {

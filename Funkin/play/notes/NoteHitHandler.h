@@ -18,7 +18,7 @@ public:
     NoteHitHandler(Controls* controls, NoteManager* noteManager, 
                    Strumline* playerStrumline, Character* boyfriend,
                    HealthBar* healthBar, PopUpStuff* popUpStuff,
-                   flixel::FlxText* scoreText, flixel::FlxSound* vocals,
+                   flixel::FlxText* scoreText, flixel::FlxSound* vocalsPlayer,
                    flixel::FlxCamera* camHUD);
     ~NoteHitHandler();
     
@@ -54,7 +54,7 @@ private:
     HealthBar* healthBar;
     PopUpStuff* popUpStuff;
     flixel::FlxText* scoreText;
-    flixel::FlxSound* vocals;
+    flixel::FlxSound* vocalsPlayer;
     flixel::FlxCamera* camHUD;
     
     int score;

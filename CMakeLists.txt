@@ -5,7 +5,7 @@ project(Funkin
     LANGUAGES C CXX
 )
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
@@ -148,6 +148,7 @@ target_include_directories(Funkin PRIVATE
     ${CMAKE_SOURCE_DIR}/lib/flixel
     ${CMAKE_SOURCE_DIR}/lib/json/include
     ${CMAKE_SOURCE_DIR}/lib/tinyxml2
+    ${CMAKE_SOURCE_DIR}/lib/Tsukiyo/include
     ${CMAKE_SOURCE_DIR}/lib/SDL/include
     ${CMAKE_SOURCE_DIR}/lib/SDL_image/include
     ${CMAKE_SOURCE_DIR}/lib/SDL_mixer/include

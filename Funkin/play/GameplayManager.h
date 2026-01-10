@@ -12,11 +12,11 @@ class GameplayManager {
 public:
     GameplayManager(NoteManager* noteManager, Strumline* opponentStrumline,
                    Character* dad, Character* gf, HealthBar* healthBar,
-                   flixel::FlxSound* vocals, const SwagSong& song);
+                   flixel::FlxSound* vocalsOpponent, const SwagSong& song);
     ~GameplayManager();
     
     void handleOpponentNotes(float deltaTime);
-    void noteMiss(int direction, Character* boyfriend, flixel::FlxSound* vocals);
+    void noteMiss(int direction, Character* boyfriend, flixel::FlxSound* vocalsPlayer);
     
 private:
     NoteManager* noteManager;
@@ -24,7 +24,7 @@ private:
     Character* dad;
     Character* gf;
     HealthBar* healthBar;
-    flixel::FlxSound* vocals;
+    flixel::FlxSound* vocalsOpponent;
     SwagSong song;
     
     flixel::FlxSound* missSound1;

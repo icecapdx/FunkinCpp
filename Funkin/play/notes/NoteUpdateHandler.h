@@ -11,7 +11,7 @@ public:
     NoteUpdateHandler(NoteManager* noteManager, NoteHitHandler* noteHitHandler, 
                       GameplayManager* gameplayManager, Character* gf);
     
-    void updateNotes(float elapsed, Character* boyfriend, flixel::FlxSound* vocals);
+    void updateNotes(float elapsed, Character* boyfriend, flixel::FlxSound* vocalsPlayer);
     
 private:
     NoteManager* noteManager;
