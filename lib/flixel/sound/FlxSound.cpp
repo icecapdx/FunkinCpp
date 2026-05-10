@@ -4,6 +4,24 @@
 #include <SDL.h>
 #include <algorithm>
 
+namespace {
+
+float mixMusicDurationMs(Mix_Music* music)
+{
+#if SDL_MIXER_VERSION_ATLEAST(2, 6, 0)
+    return static_cast<float>(Mix_MusicDuration(music) * 1000.0);
+#else
+    (void)music;
+#  if defined(__SWITCH__) || defined(__vita__)
+    return 180000.0f;
+#  else
+    return 0.0f;
+#  endif
+#endif
+}
+
+} // namespace
+
 namespace flixel {
 
 FlxSound::FlxSound() : 
@@ -196,13 +214,7 @@ bool FlxSound::loadEmbedded(const std::string& path, bool looped, bool autoDestr
     exists = true;
     
     if (isStream)
-    {
-#ifdef __SWITCH__
-        _length = 180000.0f;
-#else
-        _length = Mix_MusicDuration(music) * 1000.0f;
-#endif
-    }
+        _length = mixMusicDurationMs(music);
     else
         _length = chunk->alen * 1000.0f / 44100.0f;
     
@@ -279,7 +291,7 @@ bool FlxSound::loadByteArray(const void* data, size_t size, bool looped, bool au
     exists = true;
     
     if (isStream)
-        _length = Mix_MusicDuration(music) * 1000.0f;
+        _length = mixMusicDurationMs(music);
     else
         _length = chunk->alen * 1000.0f / 44100.0f;
     

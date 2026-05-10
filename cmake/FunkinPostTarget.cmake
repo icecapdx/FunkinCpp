@@ -1,0 +1,1 @@
+set_target_properties(Funkin PROPERTIES DEBUG_POSTFIX "_debug")

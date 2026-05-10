@@ -6,11 +6,9 @@
     - `git clone --recurse-submodules https://github.com/icecapdx/FunkinCpp.git`
 2. Run `cd /path/to/where/you/cloned/FunkinCpp` to enter the cloned repos repository
 3. Platform Build Setup (Compiling should be the same on most platforms but anyways)
-    - Windows: 
-        - `cmake -B build && cmake --build build`
-    - Nintendo Switch: 
-        - `cmake -B build && cmake --build build -DNX_BUILD=ON`
-    - Linux: 
-        - `cmake -B build && cmake --build build`
-    - PSVita:
-        - `cmake -B build && cmake --build build -DVITA_BUILD=ON`
+    - Desktop: 
+        - `cmake -S . -B build && cmake --build build -j$(nproc)`
+    - Nintendo Switch:
+        - `cmake -S . -B build-nx -DCMAKE_TOOLCHAIN_FILE="$DEVKITPRO/cmake/Switch.cmake" && cmake --build build-nx -j$(nproc)`
+    - PSVita (vitasdk; requires `VITASDK`):
+        - `cmake -S . -B build-vita -DCMAKE_TOOLCHAIN_FILE="$VITASDK/share/vita.toolchain.cmake" && cmake --build build-vita -j$(nproc)`
