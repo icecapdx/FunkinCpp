@@ -2,6 +2,11 @@
 #include "ui/TitleState.h"
 #include "imports.h"
 
+#ifdef __vita__
+unsigned int _sceUserMainThreadStackSize = 0x200000;   // 2MB stack
+unsigned int _sceUserMainThreadHeapSize  = 0x8000000;  // 128MB heap
+#endif
+
 struct Config {
     int width = 1280;        // Width of the game in pixels
     int height = 720;        // Height of the game in pixels
@@ -32,7 +37,8 @@ int main(int argc, char* argv[]) {
         game.run();
     }
     catch (const std::exception& e) {
-        SDL_Log("Error: %s", e.what());
+        fprintf(stderr, "[FATAL] %s\n", e.what());
+        fflush(stderr);
         return 1;
     }
 

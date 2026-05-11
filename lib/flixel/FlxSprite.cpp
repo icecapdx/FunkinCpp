@@ -23,7 +23,7 @@ void FlxSprite::loadGraphic(const std::string& path) {
         ownsTexture = true;
     } catch (const std::exception&) {
         try {
-            texture = FlxG::loadTexture("assets/images/logo/default.png");
+            texture = FlxG::loadTexture(ASSETS_PATH "assets/images/logo/default.png");
             ownsTexture = true;
             FlxG::log.warn("Sprite not found: " + path + ", loaded fallback image instead.");
         } catch (const std::exception& e) {
@@ -56,7 +56,7 @@ void FlxSprite::loadGraphic(SDL_Texture* newTexture) {
         ownsTexture = true;
     } else {
         try {
-            texture = FlxG::loadTexture("assets/images/logo/default.png");
+            texture = FlxG::loadTexture(ASSETS_PATH "assets/images/logo/default.png");
             ownsTexture = true;
             FlxG::log.warn("Null texture provided, loaded fallback image instead.");
         } catch (const std::exception& e) {

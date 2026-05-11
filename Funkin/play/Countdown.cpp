@@ -83,31 +83,31 @@ void Countdown::nextStep() {
         case 0:
             if (sound) delete sound;
             sound = new flixel::FlxSound();
-            sound->loadAsChunk("assets/sounds/intro3" + soundExt, false, false);
+            sound->loadAsChunk(ASSETS_PATH "assets/sounds/intro3" + soundExt, false, false);
             sound->play();
             break;
             
         case 1:
-            createSprite("assets/images/play/countdown/ready.png");
+            createSprite(ASSETS_PATH "assets/images/play/countdown/ready.png");
             if (sound) delete sound;
             sound = new flixel::FlxSound();
-            sound->loadAsChunk("assets/sounds/intro2" + soundExt, false, false);
+            sound->loadAsChunk(ASSETS_PATH "assets/sounds/intro2" + soundExt, false, false);
             sound->play();
             break;
             
         case 2:
-            createSprite("assets/images/play/countdown/set.png");
+            createSprite(ASSETS_PATH "assets/images/play/countdown/set.png");
             if (sound) delete sound;
             sound = new flixel::FlxSound();
-            sound->loadAsChunk("assets/sounds/intro1" + soundExt, false, false);
+            sound->loadAsChunk(ASSETS_PATH "assets/sounds/intro1" + soundExt, false, false);
             sound->play();
             break;
             
         case 3:
-            createSprite("assets/images/play/countdown/go.png");
+            createSprite(ASSETS_PATH "assets/images/play/countdown/go.png");
             if (sound) delete sound;
             sound = new flixel::FlxSound();
-            sound->loadAsChunk("assets/sounds/introGo" + soundExt, false, false);
+            sound->loadAsChunk(ASSETS_PATH "assets/sounds/introGo" + soundExt, false, false);
             sound->play();
             break;
             

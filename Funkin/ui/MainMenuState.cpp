@@ -37,7 +37,7 @@ void MainMenuState::create() {
     }
     
     bg = new flixel::FlxSprite(-80, 0);
-    bg->loadGraphic("assets/images/menuBG.png");
+    bg->loadGraphic(ASSETS_PATH "assets/images/menuBG.png");
     bg->scrollFactor.x = 0.0f;
     bg->scrollFactor.y = 0.18f;
     bg->setGraphicSize(static_cast<int>(bg->width * 1.18f));
@@ -48,7 +48,7 @@ void MainMenuState::create() {
     camFollow = new flixel::FlxObject(0, 0, 1, 1);
     
     magenta = new flixel::FlxSprite(-80, 0);
-    magenta->loadGraphic("assets/images/menuBGMagenta.png");
+    magenta->loadGraphic(ASSETS_PATH "assets/images/menuBGMagenta.png");
     magenta->scrollFactor.x = 0.0f;
     magenta->scrollFactor.y = 0.18f;
     magenta->setGraphicSize(static_cast<int>(magenta->width * 1.18f));
@@ -57,11 +57,11 @@ void MainMenuState::create() {
     magenta->visible = false;
     magenta->camera = flixel::FlxG::camera;
     
-    createMenuItem("storymode", "assets/images/menu/mainmenu/storymode", []() {
+    createMenuItem("storymode", ASSETS_PATH "assets/images/menu/mainmenu/storymode", []() {
         flixel::FlxG::game->switchState(new StoryMenuState());
     });
     
-    createMenuItem("freeplay", "assets/images/menu/mainmenu/freeplay", [this]() {
+    createMenuItem("freeplay", ASSETS_PATH "assets/images/menu/mainmenu/freeplay", [this]() {
         if (camFollow) {
             flixel::FlxPoint camPos(camFollow->x, camFollow->y);
             flixel::FlxG::game->switchState(new NewFreeplayState(true, camPos));
@@ -70,11 +70,11 @@ void MainMenuState::create() {
         }
     });
     
-    createMenuItem("options", "assets/images/menu/mainmenu/options", []() {
+    createMenuItem("options", ASSETS_PATH "assets/images/menu/mainmenu/options", []() {
         flixel::FlxG::game->switchState(new OptionsState());
     });
     
-    createMenuItem("credits", "assets/images/menu/mainmenu/credits", []() {
+    createMenuItem("credits", ASSETS_PATH "assets/images/menu/mainmenu/credits", []() {
         flixel::FlxG::game->switchState(new CreditsState());
     });
     
@@ -100,7 +100,7 @@ void MainMenuState::create() {
     }
     
     if (!Mix_PlayingMusic()) {
-        flixel::FlxG::sound.playMusic("assets/music/freakyMenu.ogg", 0.0f, true);
+        flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freakyMenu.ogg", 0.0f, true);
     }
     
     onMenuItemChange();
@@ -159,7 +159,7 @@ void MainMenuState::update(float elapsed) {
         }
         
         if (controls->justPressedAction(ControlAction::BACK)) {
-            flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+            flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
             exiting = true;
             canSelect = false;
             
@@ -230,7 +230,7 @@ void MainMenuState::createMenuItem(const std::string& name, const std::string& a
 }
 
 void MainMenuState::changeSelection(int change) {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
     
     selectedIndex += change;
     
@@ -246,7 +246,7 @@ void MainMenuState::changeSelection(int change) {
 
 void MainMenuState::selectItem() {
     if (selectedIndex >= 0 && selectedIndex < static_cast<int>(menuItems.size())) {
-        flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+        flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
         
         canSelect = false;
         

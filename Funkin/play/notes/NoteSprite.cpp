@@ -16,7 +16,7 @@ flixel::graphics::frames::FlxAtlasFrames* NoteSprite::noteFrames = nullptr;
 
 void NoteSprite::loadAssets() {
     if (!assetsLoaded) {
-        std::ifstream file("assets/images/play/notetypes/default/NOTE_assets.xml");
+        std::ifstream file(ASSETS_PATH "assets/images/play/notetypes/default/NOTE_assets.xml");
         if (file.is_open()) {
             std::stringstream buffer;
             buffer << file.rdbuf();
@@ -24,7 +24,7 @@ void NoteSprite::loadAssets() {
             file.close();
             
             noteFrames = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-                "assets/images/play/notetypes/default/NOTE_assets.png", xmlText);
+                ASSETS_PATH "assets/images/play/notetypes/default/NOTE_assets.png", xmlText);
             assetsLoaded = true;
             std::cout << "Note assets loaded successfully" << std::endl;
         } else {

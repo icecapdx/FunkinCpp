@@ -49,7 +49,7 @@ void GameOverSubState::create() {
         camFollow = new flixel::FlxObject(bfX, bfY, 1, 1);
     }
     
-    flixel::FlxG::sound.playAsChunk("assets/sounds/fnf_loss_sfx.ogg");    
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/fnf_loss_sfx.ogg");    
     Conductor::changeBPM(100.0f);
     
     if (gameCamera) {
@@ -107,7 +107,7 @@ void GameOverSubState::update(float elapsed) {
         if (bf->animation->current == "firstDeath" && bf->animation->finished) {
             if (!gameOverMusic) {
                 gameOverMusic = new flixel::FlxSound();
-                if (gameOverMusic->loadStream("assets/music/gameOver.ogg", true)) {
+                if (gameOverMusic->loadStream(ASSETS_PATH "assets/music/gameOver.ogg", true)) {
                     gameOverMusic->play();
                 }
             }
@@ -141,7 +141,7 @@ void GameOverSubState::endBullshit() {
             gameOverMusic->stop();
         }
         
-        flixel::FlxG::sound.playAsChunk("assets/music/gameOverEnd.ogg");
+        flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/music/gameOverEnd.ogg");
         
         flixel::util::FlxTimer* timer = new flixel::util::FlxTimer();
         timer->start(0.7f, [this](flixel::util::FlxTimer* t) {

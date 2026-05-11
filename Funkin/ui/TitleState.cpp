@@ -37,24 +37,24 @@ void TitleState::create() {
         flixel::FlxG::camera = new flixel::FlxCamera(0.0f, 0.0f, 0, 0, 1.0f);
     }
     
-    Conductor::changeBPM(102.0f);    
+    Conductor::changeBPM(102.0f);
     Highscore::load();
     
     if (!flixel::FlxG::sound.music || !Mix_PlayingMusic()) {
-        flixel::FlxG::sound.playMusic("assets/music/freakyMenu.ogg", 1.0f, true);
+        flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freakyMenu.ogg", 1.0f, true);
     }
     
     confirmSound = new flixel::FlxSound();
-    confirmSound->loadAsChunk("assets/sounds/confirmMenu.ogg", false, false);
+    confirmSound->loadAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg", false, false);
     
     gf = new flixel::FlxSprite(flixel::FlxG::width * 0.4f, flixel::FlxG::height * 0.07f);
     {
-        std::ifstream file("assets/images/menu/title/gfDanceTitle.xml");
+        std::ifstream file(ASSETS_PATH "assets/images/menu/title/gfDanceTitle.xml");
         std::string xmlText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
         
         auto gfFrames = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-            "assets/images/menu/title/gfDanceTitle.png",
+            ASSETS_PATH "assets/images/menu/title/gfDanceTitle.png",
             xmlText
         );
         gf->frames = gfFrames;
@@ -72,12 +72,12 @@ void TitleState::create() {
     
     logo = new flixel::FlxSprite(-150, -100);
     {
-        std::ifstream file("assets/images/menu/title/logoBumpin.xml");
+        std::ifstream file(ASSETS_PATH "assets/images/menu/title/logoBumpin.xml");
         std::string xmlText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
         
         auto logoFrames = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-            "assets/images/menu/title/logoBumpin.png",
+            ASSETS_PATH "assets/images/menu/title/logoBumpin.png",
             xmlText
         );
         logo->frames = logoFrames;
@@ -95,12 +95,12 @@ void TitleState::create() {
     
     enter = new flixel::FlxSprite(100, flixel::FlxG::height * 0.8f);
     {
-        std::ifstream file("assets/images/menu/title/titleEnter.xml");
+        std::ifstream file(ASSETS_PATH "assets/images/menu/title/titleEnter.xml");
         std::string xmlText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
         
         auto enterFrames = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-            "assets/images/menu/title/titleEnter.png",
+            ASSETS_PATH "assets/images/menu/title/titleEnter.png",
             xmlText
         );
         enter->frames = enterFrames;

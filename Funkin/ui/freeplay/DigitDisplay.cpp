@@ -11,8 +11,8 @@ static const std::vector<std::string> numberStringDigital = {"ZERO DIGITAL", "ON
 static const std::vector<std::string> numberStringSimple = {"ZERO ", "ONE ", "TWO ", "THREE ", "FOUR ", "FIVE ", "SIX ", "SEVEN ", "EIGHT ", "NINE "};
 
 Digit::Digit(float _x, float _y, const std::string& _path) : flixel::FlxSprite(_x, _y) {
-    std::string xmlPath = "assets/images/" + _path + ".xml";
-    std::string pngPath = "assets/images/" + _path + ".png";
+    std::string xmlPath = ASSETS_PATH "assets/images/" + _path + ".xml";
+    std::string pngPath = ASSETS_PATH "assets/images/" + _path + ".png";
     
     std::ifstream xmlFile(xmlPath);
     std::stringstream buffer;

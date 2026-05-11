@@ -8,7 +8,7 @@ GameConfig::GameConfig() : controls(nullptr) {
     controls = new Controls();
     loadConfig();
     if (controls) {
-        controls->loadFromConfig("assets/data/config.json");
+        controls->loadFromConfig(ASSETS_PATH "assets/data/config.json");
     }
 }
 
@@ -27,7 +27,7 @@ GameConfig* GameConfig::getInstance() {
 }
 
 void GameConfig::loadConfig() {
-    std::ifstream file("assets/data/config.json");
+    std::ifstream file(ASSETS_PATH "assets/data/config.json");
     if (!file.is_open()) {
         std::cerr << "Could not open config.json" << std::endl;
         return;
@@ -62,7 +62,7 @@ void GameConfig::setGhostTapping(bool value) {
 }
 
 void GameConfig::saveConfig() {
-    std::ofstream file("assets/data/config.json");
+    std::ofstream file(ASSETS_PATH "assets/data/config.json");
     if (!file.is_open()) {
         std::cerr << "Could not open config.json for writing" << std::endl;
         return;

@@ -55,7 +55,7 @@ PlayState::PlayState() {
     persistentUpdate = true;
     persistentDraw = true;
     scoreText = new flixel::FlxText(0, 0, 0, "");
-    scoreText->setFont("assets/fonts/vcr.ttf");
+    scoreText->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     scoreText->setSize(16);
     scoreText->setBorderStyle(flixel::FlxTextBorderStyle::OUTLINE_FAST, {0, 0, 0, 255}, 1.0f);
     scoreText->scrollFactor.x = 0.0f;
@@ -251,7 +251,7 @@ void PlayState::create() {
     }
     
     ScriptManager::getInstance()->clear();
-    ScriptManager::getInstance()->loadScriptsFromDirectory("assets/scripts");
+    ScriptManager::getInstance()->loadScriptsFromDirectory(ASSETS_PATH "assets/scripts");
     
     std::string songName = SONG.song;
     std::transform(songName.begin(), songName.end(), songName.begin(), ::tolower);
@@ -484,7 +484,7 @@ void PlayState::endSong() {
                 Highscore::saveWeekScore(storyWeek, campaignScore, storyDifficulty, accuracy);
                 
                 if (flixel::FlxG::sound.music) {
-                    flixel::FlxG::sound.playMusic("assets/music/freakyMenu.ogg");
+                    flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freakyMenu.ogg");
                 }
                 
                 flixel::FlxG::game->switchState(new StoryMenuState());
@@ -515,7 +515,7 @@ void PlayState::endSong() {
             Highscore::saveScore(songName, songScore, storyDifficulty, accuracy);
             
             if (flixel::FlxG::sound.music) {
-                flixel::FlxG::sound.playMusic("assets/music/freakyMenu.ogg");
+                flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freakyMenu.ogg");
             }
             flixel::FlxG::game->switchState(new NewFreeplayState(true, flixel::FlxPoint(0.0f, 0.0f)));
         }

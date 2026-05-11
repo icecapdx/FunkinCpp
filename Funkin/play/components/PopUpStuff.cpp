@@ -16,7 +16,7 @@ void PopUpStuff::popUpScore(const std::string& rating, int combo, float crochet,
     int windowHeight = flixel::FlxG::height;
     
     flixel::FlxSprite* ratingSprite = new flixel::FlxSprite();
-    ratingSprite->loadGraphic("assets/images/play/ratings/" + rating + ".png");
+    ratingSprite->loadGraphic(ASSETS_PATH "assets/images/play/ratings/" + rating + ".png");
     ratingSprite->screenCenter(flixel::util::FlxAxes::XY);
     ratingSprite->x = windowWidth * 0.55f - 40;
     ratingSprite->y -= 60;
@@ -35,7 +35,7 @@ void PopUpStuff::popUpScore(const std::string& rating, int combo, float crochet,
     
     if (combo >= 10 || combo == 0) {
         flixel::FlxSprite* comboSprite = new flixel::FlxSprite();
-        comboSprite->loadGraphic("assets/images/play/numbers/combo.png");
+        comboSprite->loadGraphic(ASSETS_PATH "assets/images/play/numbers/combo.png");
         comboSprite->screenCenter(flixel::util::FlxAxes::XY);
         comboSprite->x = windowWidth * 0.55f;
         comboSprite->acceleration.y = 600;
@@ -59,7 +59,7 @@ void PopUpStuff::popUpScore(const std::string& rating, int combo, float crochet,
         for (int i = 0; i < 3; i++) {
             if (combo >= 10 || combo == 0) {
                 flixel::FlxSprite* numSprite = new flixel::FlxSprite();
-                numSprite->loadGraphic("assets/images/play/numbers/num" + std::to_string(comboDigits[i]) + ".png");
+                numSprite->loadGraphic(ASSETS_PATH "assets/images/play/numbers/num" + std::to_string(comboDigits[i]) + ".png");
                 numSprite->screenCenter(flixel::util::FlxAxes::XY);
                 numSprite->x = windowWidth * 0.55f + (43 * i) - 90;
                 numSprite->y += 80;

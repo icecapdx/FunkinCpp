@@ -42,7 +42,7 @@ void PauseSubState::create() {
     };
     
     pauseMusic = new flixel::FlxSound();
-    pauseMusic->loadStream("assets/music/breakfast.ogg", true);
+    pauseMusic->loadStream(ASSETS_PATH "assets/music/breakfast.ogg", true);
     pauseMusic->setVolume(0.0f);
     pauseMusic->play();
     
@@ -56,7 +56,7 @@ void PauseSubState::create() {
     flixel::tweens::tween(bg, {{"alpha", 0.6f}}, 0.4f, flixel::tweens::FlxEase::quadInOut);
     
     levelInfo = new flixel::FlxText(20, 15, 0, PlayState::SONG.song.c_str());
-    levelInfo->setFont("assets/fonts/vcr.ttf");
+    levelInfo->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     levelInfo->setSize(32);
     levelInfo->setColor(0xFFFFFFFF);
     levelInfo->scrollFactor.x = 0.0f;
@@ -70,7 +70,7 @@ void PauseSubState::create() {
         : "NORMAL";
     
     levelDifficulty = new flixel::FlxText(20, 15 + 32, 0, diffStr.c_str());
-    levelDifficulty->setFont("assets/fonts/vcr.ttf");
+    levelDifficulty->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     levelDifficulty->setSize(32);
     levelDifficulty->setColor(0xFFFFFFFF);
     levelDifficulty->scrollFactor.x = 0.0f;
@@ -80,7 +80,7 @@ void PauseSubState::create() {
     
     std::string deathText = "Blue balled: " + std::to_string(PlayState::deathCounter);
     deathCounter = new flixel::FlxText(20, 15 + 64, 0, deathText.c_str());
-    deathCounter->setFont("assets/fonts/vcr.ttf");
+    deathCounter->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     deathCounter->setSize(32);
     deathCounter->setColor(0xFFFFFFFF);
     deathCounter->scrollFactor.x = 0.0f;
@@ -89,7 +89,7 @@ void PauseSubState::create() {
     deathCounter->camera = flixel::FlxG::camera;
     
     practiceText = new flixel::FlxText(20, 15 + 64 + 32, 0, "PRACTICE MODE");
-    practiceText->setFont("assets/fonts/vcr.ttf");
+    practiceText->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     practiceText->setSize(32);
     practiceText->setColor(0xFFFFFFFF);
     practiceText->scrollFactor.x = 0.0f;
@@ -253,7 +253,7 @@ void PauseSubState::draw() {
 
 void PauseSubState::changeSelection(int change) {
     if (change != 0) {
-        flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+        flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
     }
     
     curSelected += change;

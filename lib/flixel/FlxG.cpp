@@ -6,6 +6,9 @@
 #include "util/FlxTimer.h"
 #include <stdexcept>
 #include <iostream>
+#ifdef __vita__
+#include <vitaGL.h>
+#endif
 
 namespace flixel {
 
@@ -227,6 +230,10 @@ void FlxG::init(FlxGame* gameInstance, int gameWidth, int gameHeight) {
     initialWidth = gameWidth;
     initialHeight = gameHeight;
 
+#ifdef __vita__
+    vglInitExtended(0, 960, 544, 0x1800000, SCE_GXM_MULTISAMPLE_NONE);
+#endif
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         throw std::runtime_error("Failed to initialize SDL: " + std::string(SDL_GetError()));
     }
@@ -236,9 +243,9 @@ void FlxG::init(FlxGame* gameInstance, int gameWidth, int gameHeight) {
         throw std::runtime_error("Failed to initialize SDL_image: " + std::string(IMG_GetError()));
     }
 
-    int mixFlags = MIX_INIT_OGG | MIX_INIT_MP3;
-    if ((Mix_Init(mixFlags) & mixFlags) != mixFlags) {
-        throw std::runtime_error("Failed to initialize SDL_mixer: " + std::string(Mix_GetError()));
+    int mixFlags = MIX_INIT_OGG;
+    if (!(Mix_Init(mixFlags) & MIX_INIT_OGG)) {
+        throw std::runtime_error("Failed to initialize SDL_mixer (OGG): " + std::string(Mix_GetError()));
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -274,7 +281,7 @@ void FlxG::init(FlxGame* gameInstance, int gameWidth, int gameHeight) {
     SDL_RenderSetIntegerScale(renderer, SDL_FALSE);
 
     try {
-        setCursor("assets/images/ui/cursor.png", 0, 0);
+        setCursor(ASSETS_PATH "assets/images/ui/cursor.png", 0, 0);
     }
     catch (const std::exception& e) {
         log.warn("Failed to load default cursor: " + std::string(e.what()));
@@ -320,14 +327,18 @@ void FlxG::setFullscreen(bool fullscreen) {
 SDL_Texture* FlxG::loadTexture(const std::string& path) {
     SDL_Surface* surface = IMG_Load(path.c_str());
     if (!surface) {
-        throw std::runtime_error("Failed to load image: " + std::string(IMG_GetError()));
+        fprintf(stderr, "[TEXTURE] IMG_Load failed for %s: %s\n", path.c_str(), IMG_GetError());
+        fflush(stderr);
+        return nullptr;
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
 
     if (!texture) {
-        throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
+        fprintf(stderr, "[TEXTURE] CreateTextureFromSurface failed for %s: %s\n", path.c_str(), SDL_GetError());
+        fflush(stderr);
+        return nullptr;
     }
 
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);

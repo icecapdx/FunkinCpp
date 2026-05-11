@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include "../../imports.h"
 
 using json = nlohmann::json;
 
@@ -89,7 +90,7 @@ int Highscore::getWeekScore(int week, int diff) {
 }
 
 void Highscore::load() {
-    std::ifstream file("assets/data/highscores.json");
+    std::ifstream file(ASSETS_PATH "assets/data/highscores.json");
     
     if (!file.is_open()) {
         return;
@@ -136,7 +137,7 @@ void Highscore::save() {
     }
     saveData["songAccuracies"] = accuraciesJson;
     
-    std::ofstream file("assets/data/highscores.json");
+    std::ofstream file(ASSETS_PATH "assets/data/highscores.json");
     if (file.is_open()) {
         file << saveData.dump(4);
         file.close();

@@ -68,7 +68,7 @@ void StoryMenuState::create() {
     flixel::FlxG::camera->zoom = 1.0f;
     
     if (flixel::FlxG::sound.music && !Mix_PlayingMusic()) {
-        flixel::FlxG::sound.playMusic("assets/music/freakyMenu.ogg");
+        flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freakyMenu.ogg");
     }
     
     loadWeeks();
@@ -88,8 +88,8 @@ void StoryMenuState::create() {
     blackBar->scrollFactor.set(0, 0);
     blackBar->camera = flixel::FlxG::camera;
     
-    std::string xmlPath = "assets/images/menu/story/campaign_menu_UI_assets.xml";
-    std::string pngPath = "assets/images/menu/story/campaign_menu_UI_assets.png";
+    std::string xmlPath = ASSETS_PATH "assets/images/menu/story/campaign_menu_UI_assets.xml";
+    std::string pngPath = ASSETS_PATH "assets/images/menu/story/campaign_menu_UI_assets.png";
     
     flixel::graphics::frames::FlxAtlasFrames* ui_tex = nullptr;
     std::ifstream xmlFile(xmlPath);
@@ -247,14 +247,14 @@ void StoryMenuState::create() {
     }
     
     scoreText = new flixel::FlxText(10, 10, 0, "WEEK SCORE: 0", 32);
-    scoreText->setFont("assets/fonts/vcr.ttf");
+    scoreText->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     scoreText->setSize(32);
     scoreText->setColor(0xFFFFFFFF);
     scoreText->scrollFactor.set(0, 0);
     scoreText->camera = flixel::FlxG::camera;
     
     txtWeekTitle = new flixel::FlxText(flixel::FlxG::width * 0.7f, 10, 0, "", 32);
-    txtWeekTitle->setFont("assets/fonts/vcr.ttf");
+    txtWeekTitle->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     txtWeekTitle->setSize(32);
     txtWeekTitle->setColor(0xFFFFFFFF);
     txtWeekTitle->alpha = 0.7f;
@@ -262,7 +262,7 @@ void StoryMenuState::create() {
     txtWeekTitle->camera = flixel::FlxG::camera;
     
     txtTracklist = new flixel::FlxText(flixel::FlxG::width * 0.05f, yellowBG->x + yellowBG->height + 100, 0, "Tracks", 32);
-    txtTracklist->setFont("assets/fonts/vcr.ttf");
+    txtTracklist->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     txtTracklist->setSize(32);
     txtTracklist->setColor(0xFFe55777);
     txtTracklist->scrollFactor.set(0, 0);
@@ -379,7 +379,7 @@ void StoryMenuState::update(float elapsed) {
     if (!movedBack && !selectedWeek) {
         Controls* controls = GameConfig::getInstance()->controls;
         if (controls->justPressedAction(ControlAction::BACK)) {
-            flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+            flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
             movedBack = true;
             
             startTransitionOut(0.5f, flixel::util::FlxColor::BLACK, flixel::FlxPoint(0, 1), []() {
@@ -527,7 +527,7 @@ void StoryMenuState::changeWeek(int change) {
         bullShit++;
     }
     
-    flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
     
     updateAvailableDifficulties();
     updateText();
@@ -589,7 +589,7 @@ void StoryMenuState::selectWeek() {
     
     if (weekData[curWeek].unlocked) {
         if (!stopspamming) {
-            flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+            flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
             
             if (curWeek < static_cast<int>(grpWeekText.size())) {
                 grpWeekText[curWeek]->startFlashing();

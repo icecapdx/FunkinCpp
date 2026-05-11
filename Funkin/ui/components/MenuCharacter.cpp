@@ -8,8 +8,8 @@ MenuCharacter::MenuCharacter(float x, const std::string& characterName)
     : FlxSprite(x, 0.0f)
     , character(characterName)
 {
-    std::string xmlPath = "assets/images/menu/story/campaign_menu_UI_characters.xml";
-    std::string pngPath = "assets/images/menu/story/campaign_menu_UI_characters.png";
+    std::string xmlPath = ASSETS_PATH "assets/images/menu/story/campaign_menu_UI_characters.xml";
+    std::string pngPath = ASSETS_PATH "assets/images/menu/story/campaign_menu_UI_characters.png";
     
     std::ifstream xmlFile(xmlPath);
     if (xmlFile.is_open()) {

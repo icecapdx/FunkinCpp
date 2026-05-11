@@ -68,7 +68,7 @@ void Stage::buildStage() {
 }
 
 bool Stage::loadFromJSON(const std::string& stageName) {
-    std::string jsonPath = "assets/data/stages/" + stageName + ".json";
+    std::string jsonPath = ASSETS_PATH "assets/data/stages/" + stageName + ".json";
     std::ifstream file(jsonPath);
     
     if (!file.is_open()) {
@@ -185,17 +185,17 @@ flixel::FlxSprite* Stage::createAnimatedSprite(float x, float y, const std::stri
 void Stage::buildDefaultStage() {
     defaultZoom = 1.05f;
     
-    auto bg = createSprite(-600, -200, "assets/images/stages/stage/stageback.png");
+    auto bg = createSprite(-600, -200, ASSETS_PATH "assets/images/stages/stage/stageback.png");
     bg->scrollFactor.set(0.9f, 0.9f);
     bg->active = false;
     
-    auto stageFront = createSprite(-650, 600, "assets/images/stages/stage/stagefront.png");
+    auto stageFront = createSprite(-650, 600, ASSETS_PATH "assets/images/stages/stage/stagefront.png");
     stageFront->setScale(1.1f, 1.1f);
     stageFront->updateHitbox();
     stageFront->scrollFactor.set(0.9f, 0.9f);
     stageFront->active = false;
     
-    auto stageCurtains = createSprite(-500, -300, "assets/images/stages/stage/stagecurtains.png");
+    auto stageCurtains = createSprite(-500, -300, ASSETS_PATH "assets/images/stages/stage/stagecurtains.png");
     stageCurtains->setScale(0.9f, 0.9f);
     stageCurtains->updateHitbox();
     stageCurtains->scrollFactor.set(1.3f, 1.3f);

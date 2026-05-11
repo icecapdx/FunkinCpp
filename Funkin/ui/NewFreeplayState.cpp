@@ -61,7 +61,7 @@ NewFreeplayState::~NewFreeplayState() {
 
 void NewFreeplayState::create() {
     if (transitionFromMenu) {
-        flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+        flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
         
         if (flixel::FlxG::sound.music && Mix_PlayingMusic()) {
             Mix_VolumeMusic(0);
@@ -145,13 +145,13 @@ void NewFreeplayState::update(float elapsed) {
         if (upP) {
             changeSelected(-1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         } else if (downP) {
             changeSelected(1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         }
@@ -159,13 +159,13 @@ void NewFreeplayState::update(float elapsed) {
         if (leftP) {
             changeDifficulty(-1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         } else if (rightP) {
             changeDifficulty(1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         }
@@ -173,13 +173,13 @@ void NewFreeplayState::update(float elapsed) {
         if (qP) {
             changeCategory(-1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         } else if (eP) {
             changeCategory(1);
             flixel::FlxSound* scrollSound = new flixel::FlxSound();
-            scrollSound->loadAsChunk("assets/sounds/scrollMenu.ogg");
+            scrollSound->loadAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             scrollSound->play();
             delete scrollSound;
         }
@@ -220,7 +220,7 @@ void NewFreeplayState::update(float elapsed) {
             exitTimer = 0.0f;
             
             flixel::FlxSound* cancelSound = new flixel::FlxSound();
-            cancelSound->loadAsChunk("assets/sounds/cancelMenu.ogg");
+            cancelSound->loadAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
             cancelSound->play();
             delete cancelSound;
             
@@ -247,7 +247,7 @@ void NewFreeplayState::update(float elapsed) {
             }
             
             flixel::FlxSound* confirmSound = new flixel::FlxSound();
-            confirmSound->loadAsChunk("assets/sounds/confirmMenu.ogg");
+            confirmSound->loadAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
             confirmSound->play();
             delete confirmSound;
             
@@ -422,7 +422,7 @@ void NewFreeplayState::draw() {
 
 void NewFreeplayState::addScrollingText(const std::string& text, float yPos, float scrollSpeed, int size, Uint32 color) {
     flixel::FlxText* tempText = new flixel::FlxText(0, 0, 0, text.c_str());
-    tempText->setFont("assets/fonts/5by7.ttf");
+    tempText->setFont(ASSETS_PATH "assets/fonts/5by7.ttf");
     tempText->setSize(size);
     tempText->setColor(color);
     
@@ -521,7 +521,7 @@ void NewFreeplayState::beatHit() {
 
 void NewFreeplayState::createFreeplayStuff() {
     bg = new flixel::FlxSprite(0.0f, 0.0f);
-    bg->loadGraphic("assets/images/menu/freeplay/bgs/yellow.png");
+    bg->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/bgs/yellow.png");
     bg->scrollFactor.x = 0.0f;
     bg->scrollFactor.y = 0.0f;
     bg->camera = camMenu;
@@ -535,7 +535,7 @@ void NewFreeplayState::createFreeplayStuff() {
     flash->camera = camMenu;
     
     cover = new flixel::FlxSprite(1280.0f, 0.0f);
-    cover->loadGraphic("assets/images/menu/freeplay/covers/dad.png");
+    cover->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/covers/dad.png");
     cover->x -= cover->width;
     cover->scrollFactor.x = 0.0f;
     cover->scrollFactor.y = 0.0f;
@@ -548,15 +548,15 @@ void NewFreeplayState::createFreeplayStuff() {
     topBar->camera = camMenu;
     
     freeplayText = new flixel::FlxText(16.0f, 16.0f, 0, "FREEPLAY", 32);
-    freeplayText->setFont("assets/fonts/vcr.ttf");
+    freeplayText->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     freeplayText->setColor(0xFFFFFFFF);
     freeplayText->scrollFactor.x = 0.0f;
     freeplayText->scrollFactor.y = 0.0f;
     freeplayText->camera = camMenu;
     
     highscoreSprite = new flixel::FlxSprite(860.0f, 70.0f);
-    std::string hsXml = "assets/images/menu/freeplay/highscore.xml";
-    std::string hsPng = "assets/images/menu/freeplay/highscore.png";
+    std::string hsXml = ASSETS_PATH "assets/images/menu/freeplay/highscore.xml";
+    std::string hsPng = ASSETS_PATH "assets/images/menu/freeplay/highscore.png";
     std::ifstream hsXmlFile(hsXml);
     std::stringstream hsBuffer;
     hsBuffer << hsXmlFile.rdbuf();
@@ -575,7 +575,7 @@ void NewFreeplayState::createFreeplayStuff() {
     highscoreSprite->camera = camMenu;
     
     clearPercentSprite = new flixel::FlxSprite(1165.0f, 65.0f);
-    clearPercentSprite->loadGraphic("assets/images/menu/freeplay/clearBox.png");
+    clearPercentSprite->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/clearBox.png");
     clearPercentSprite->scrollFactor.x = 0.0f;
     clearPercentSprite->scrollFactor.y = 0.0f;
     clearPercentSprite->camera = camMenu;
@@ -595,21 +595,21 @@ void NewFreeplayState::createFreeplayStuff() {
     albumDummy = new flixel::FlxObject(950.0f, 285.0f, 1, 1);
     albumDummy->angle = 10.0f;
     album = new flixel::FlxSprite(albumDummy->x, albumDummy->y);
-    album->loadGraphic("assets/images/menu/freeplay/album/vol1/album.png");
+    album->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/album/vol1/album.png");
     album->angle = albumDummy->angle;
     album->scrollFactor.x = 0.0f;
     album->scrollFactor.y = 0.0f;
     album->camera = camMenu;
     
     albumTitle = new flixel::FlxSprite(album->x - 5.0f, album->y + 205.0f);
-    albumTitle->loadGraphic("assets/images/menu/freeplay/album/vol1/title.png");
+    albumTitle->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/album/vol1/title.png");
     albumTitle->scrollFactor.x = 0.0f;
     albumTitle->scrollFactor.y = 0.0f;
     albumTitle->camera = camMenu;
     
     arrowLeft = new flixel::FlxSprite(20.0f, 70.0f);
-    std::string arrowXml = "assets/images/menu/freeplay/freeplaySelector.xml";
-    std::string arrowPng = "assets/images/menu/freeplay/freeplaySelector.png";
+    std::string arrowXml = ASSETS_PATH "assets/images/menu/freeplay/freeplaySelector.xml";
+    std::string arrowPng = ASSETS_PATH "assets/images/menu/freeplay/freeplaySelector.png";
     std::ifstream arrowXmlFile(arrowXml);
     std::stringstream arrowBuffer;
     arrowBuffer << arrowXmlFile.rdbuf();
@@ -643,7 +643,7 @@ void NewFreeplayState::createFreeplayStuff() {
     arrowRight->camera = camMenu;
     
     difficulty = new flixel::FlxSprite(197.0f, 115.0f);
-    difficulty->loadGraphic(("assets/images/menu/freeplay/diff/" + diffNumberToDiffName(curDifficulty) + ".png").c_str());
+    difficulty->loadGraphic((ASSETS_PATH "assets/images/menu/freeplay/diff/" + diffNumberToDiffName(curDifficulty) + ".png").c_str());
     if (difficulty->width > 0 && difficulty->height > 0) {
         difficulty->offsetX = difficulty->width / 2.0f;
         difficulty->offsetY = difficulty->height / 2.0f;
@@ -653,7 +653,7 @@ void NewFreeplayState::createFreeplayStuff() {
     difficulty->camera = camMenu;
     
     std::string fontLetters = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    categoryFont = flixel::FlxBitmapFont::fromMonospace("assets/images/menu/freeplay/resultFont.png", fontLetters, 49, 62);
+    categoryFont = flixel::FlxBitmapFont::fromMonospace(ASSETS_PATH "assets/images/menu/freeplay/resultFont.png", fontLetters, 49, 62);
     
     categoryTitle = new flixel::FlxBitmapText(categoryFont);
     categoryTitle->letterSpacing = -15;
@@ -667,7 +667,7 @@ void NewFreeplayState::createFreeplayStuff() {
     float titleCenterY = categoryTitle->y + (categoryTitle->height / 2.0f);
     
     miniArrowLeft = new flixel::FlxSprite(categoryTitle->x, titleCenterY);
-    miniArrowLeft->loadGraphic("assets/images/menu/freeplay/miniArrow.png");
+    miniArrowLeft->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/miniArrow.png");
     miniArrowLeft->x -= miniArrowLeft->width;
     miniArrowLeft->y -= miniArrowLeft->height / 2.0f;
     miniArrowLeft->y -= 7.0f;
@@ -678,7 +678,7 @@ void NewFreeplayState::createFreeplayStuff() {
     miniArrowLeft->camera = camMenu;
     
     miniArrowRight = new flixel::FlxSprite(categoryTitle->x + categoryTitle->width, titleCenterY);
-    miniArrowRight->loadGraphic("assets/images/menu/freeplay/miniArrow.png");
+    miniArrowRight->loadGraphic(ASSETS_PATH "assets/images/menu/freeplay/miniArrow.png");
     miniArrowRight->y -= miniArrowRight->height / 2.0f;
     miniArrowRight->x += 20.0f;
     miniArrowRight->y -= 7.0f;
@@ -687,8 +687,8 @@ void NewFreeplayState::createFreeplayStuff() {
     miniArrowRight->camera = camMenu;
     
     dj = new flixel::FlxSprite(-9.0f, 290.0f);
-    std::string djXml = "assets/images/menu/freeplay/dj/bf.xml";
-    std::string djPng = "assets/images/menu/freeplay/dj/bf.png";
+    std::string djXml = ASSETS_PATH "assets/images/menu/freeplay/dj/bf.xml";
+    std::string djPng = ASSETS_PATH "assets/images/menu/freeplay/dj/bf.png";
     std::ifstream djXmlFile(djXml);
     std::stringstream djBuffer;
     djBuffer << djXmlFile.rdbuf();
@@ -925,7 +925,7 @@ void NewFreeplayState::createFreeplayStuff() {
 
 void NewFreeplayState::fakeMainMenuSetup() {
     fakeMenuBg = new flixel::FlxSprite(-80, 0);
-    fakeMenuBg->loadGraphic("assets/images/menuBG.png");
+    fakeMenuBg->loadGraphic(ASSETS_PATH "assets/images/menuBG.png");
     fakeMenuBg->scrollFactor.x = 0.0f;
     fakeMenuBg->scrollFactor.y = 0.18f;
     fakeMenuBg->setGraphicSize(static_cast<int>(fakeMenuBg->width * 1.18f));
@@ -936,7 +936,7 @@ void NewFreeplayState::fakeMainMenuSetup() {
     std::vector<std::string> menuItemNames = {"storymode", "freeplay", "options", "credits"};
     
     for (size_t i = 0; i < menuItemNames.size(); i++) {
-        AtlasMenuItem* item = new AtlasMenuItem(menuItemNames[i], "assets/images/menu/mainmenu/" + menuItemNames[i], nullptr);
+        AtlasMenuItem* item = new AtlasMenuItem(menuItemNames[i], ASSETS_PATH "assets/images/menu/mainmenu/" + menuItemNames[i], nullptr);
         item->ID = static_cast<int>(i);
         item->centered = true;
         item->changeAnim("idle");
@@ -986,7 +986,7 @@ void NewFreeplayState::startFreeplaySong() {
     Conductor::songPosition = 0.0f;
     Conductor::bpmChangeMap.clear();
     Conductor::changeBPM(145.0f);
-    flixel::FlxG::sound.playMusic("assets/music/freeplayRandom.ogg", 0.9f, true);
+    flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freeplayRandom.ogg", 0.9f, true);
     musicStartTicks = SDL_GetTicks();
 }
 
@@ -1057,7 +1057,7 @@ void NewFreeplayState::changeDifficulty(int change) {
         float oldY = difficulty->y;
         difficulty->y = oldY - 15.0f;
         difficulty->alpha = 0.5f;
-        difficulty->loadGraphic(("assets/images/menu/freeplay/diff/" + diffNumberToDiffName(curDifficulty) + ".png").c_str());
+        difficulty->loadGraphic((ASSETS_PATH "assets/images/menu/freeplay/diff/" + diffNumberToDiffName(curDifficulty) + ".png").c_str());
         
         flixel::tweens::tweenY(difficulty, oldY, 0.2f, flixel::tweens::FlxEase::backOut);
         flixel::tweens::tweenAlpha(difficulty, 1.0f, 0.2f, flixel::tweens::FlxEase::sineOut);
@@ -1153,7 +1153,7 @@ void NewFreeplayState::updateAlbum(bool doTween) {
             album->scale.x = startScale;
             album->scale.y = startScale;
             album->alpha = 0.0f;
-            album->loadGraphic(("assets/images/menu/freeplay/album/" + curAlbum + "/album.png").c_str());
+            album->loadGraphic((ASSETS_PATH "assets/images/menu/freeplay/album/" + curAlbum + "/album.png").c_str());
             
             if (doTween) {
                 flixel::tweens::tweenScaleX(album, 1.0f, 0.4f, flixel::tweens::FlxEase::elasticOut);
@@ -1169,7 +1169,7 @@ void NewFreeplayState::updateAlbum(bool doTween) {
             float titleY = albumTitle->y;
             albumTitle->y = titleY + 20.0f;
             albumTitle->alpha = 0.0f;
-            albumTitle->loadGraphic(("assets/images/menu/freeplay/album/" + curAlbum + "/title.png").c_str());
+            albumTitle->loadGraphic((ASSETS_PATH "assets/images/menu/freeplay/album/" + curAlbum + "/title.png").c_str());
             
             if (doTween) {
                 flixel::tweens::tweenY(albumTitle, titleY, 0.3f, flixel::tweens::FlxEase::backOut);

@@ -43,7 +43,7 @@ void OptionsState::create() {
     camFollowY = 0.0f;
     
     bg = new flixel::FlxSprite(0, 0);
-    bg->loadGraphic("assets/images/menuDesat.png");
+    bg->loadGraphic(ASSETS_PATH "assets/images/menuDesat.png");
     bg->setGraphicSize(static_cast<int>(bg->width * 1.1f));
     bg->updateHitbox();
     bg->screenCenter();
@@ -248,12 +248,12 @@ void OptionsState::update(float elapsed) {
         bool backP = controls->justPressedAction(ControlAction::BACK);
         
         if (upP) {
-            flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+            flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             prefSelectedIndex--;
             if (prefSelectedIndex < 0) prefSelectedIndex = static_cast<int>(prefLabels.size()) - 1;
         }
         if (downP) {
-            flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+            flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
             prefSelectedIndex++;
             if (prefSelectedIndex >= static_cast<int>(prefLabels.size())) prefSelectedIndex = 0;
         }
@@ -328,7 +328,7 @@ void OptionsState::update(float elapsed) {
             bool eP = flixel::FlxG::keys.keys[SDL_SCANCODE_E].justPressed();
             
             if (qP || eP) {
-                flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+                flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
                 isGamepadMode = !isGamepadMode;
                 if (deviceLabel) {
                     deviceLabel->setText(isGamepadMode ? "GAMEPAD" : "KEYBOARD");
@@ -339,12 +339,12 @@ void OptionsState::update(float elapsed) {
 #endif
             if (leftP || rightP) {
                 if (controlSelectedIndex < 12) {
-                    flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+                    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
                     controlColumnIndex = (controlColumnIndex == 0) ? 1 : 0;
                 }
             }
             if (upP) {
-                flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+                flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
                 controlSelectedIndex--;
                 if (controlSelectedIndex < 0) {
                     controlSelectedIndex = static_cast<int>(controlLabels.size()) - 1;
@@ -354,7 +354,7 @@ void OptionsState::update(float elapsed) {
                 }
             }
             if (downP) {
-                flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+                flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
                 controlSelectedIndex++;
                 if (controlSelectedIndex >= static_cast<int>(controlLabels.size())) {
                     controlSelectedIndex = 0;
@@ -446,7 +446,7 @@ void OptionsState::destroy() {
 }
 
 void OptionsState::changeSelection(int change) {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
     selectedIndex += change;
     
     if (selectedIndex < 0) selectedIndex = static_cast<int>(menuItems.size()) - 1;
@@ -454,7 +454,7 @@ void OptionsState::changeSelection(int change) {
 }
 
 void OptionsState::selectItem() {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
     
     if (selectedIndex == 0) {
         enterPreferencesMenu();
@@ -468,7 +468,7 @@ void OptionsState::selectItem() {
 }
 
 void OptionsState::goBack() {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
     
     startTransitionOut(0.5f, flixel::util::FlxColor::BLACK, flixel::FlxPoint(0, 1), []() {
         flixel::FlxG::game->switchState(new MainMenuState());
@@ -481,7 +481,7 @@ void OptionsState::enterPreferencesMenu() {
 }
 
 void OptionsState::exitPreferencesMenu() {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
     currentSubMenu = SubMenu::None;
     savePreferences();
 }
@@ -493,17 +493,17 @@ void OptionsState::enterControlsMenu() {
 }
 
 void OptionsState::exitControlsMenu() {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
     currentSubMenu = SubMenu::None;
     
     auto playState = GameConfig::getInstance();
     if (playState && playState->controls) {
-        playState->controls->saveToConfig("assets/data/config.json");
+        playState->controls->saveToConfig(ASSETS_PATH "assets/data/config.json");
     }
 }
 
 void OptionsState::startRebinding() {
-    flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
     awaitingInput = true;
     
     if (controlSelectedIndex >= 0 && controlSelectedIndex < static_cast<int>(controlBindLabels.size())) {
@@ -535,7 +535,7 @@ void OptionsState::captureInput() {
                     playState->controls->rebindGamepad(action, isPrimary, button);
                     awaitingInput = false;
                     updateControlBindings();
-                    flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+                    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
                 }
                 return;
             }
@@ -557,7 +557,7 @@ void OptionsState::captureInput() {
                     playState->controls->rebindKey(action, isPrimary, scancode);
                     awaitingInput = false;
                     updateControlBindings();
-                    flixel::FlxG::sound.playAsChunk("assets/sounds/confirmMenu.ogg");
+                    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/confirmMenu.ogg");
                 }
                 return;
             }
@@ -568,7 +568,7 @@ void OptionsState::captureInput() {
 void OptionsState::togglePreference() {
     if (prefSelectedIndex < 0 || prefSelectedIndex >= static_cast<int>(checkBoxes.size())) return;
     
-    flixel::FlxG::sound.playAsChunk("assets/sounds/scrollMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/scrollMenu.ogg");
     
     std::vector<std::string> prefKeys = {
         "downscroll", "ghostTapping"
@@ -585,7 +585,7 @@ void OptionsState::loadPreferences() {
     preferences["downscroll"] = false;
     preferences["ghostTapping"] = true;
     
-    std::ifstream file("assets/data/config.json");
+    std::ifstream file(ASSETS_PATH "assets/data/config.json");
     if (file.is_open()) {
         try {
             json config;
@@ -619,7 +619,7 @@ void OptionsState::loadPreferences() {
 
 void OptionsState::savePreferences() {
     json config;
-    std::ifstream inFile("assets/data/config.json");
+    std::ifstream inFile(ASSETS_PATH "assets/data/config.json");
     if (inFile.is_open()) {
         try {
             inFile >> config;
@@ -637,7 +637,7 @@ void OptionsState::savePreferences() {
     config["gameConfig"]["downscroll"] = preferences["downscroll"];
     config["gameConfig"]["ghostTapping"] = preferences["ghostTapping"];
     
-    std::ofstream outFile("assets/data/config.json");
+    std::ofstream outFile(ASSETS_PATH "assets/data/config.json");
     if (outFile.is_open()) {
         outFile << config.dump(4);
         outFile.close();

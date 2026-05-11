@@ -51,7 +51,7 @@ void Character::loadCharacter() {
 }
 
 bool Character::loadFromJSON(const std::string& character) {
-    std::string jsonPath = "assets/data/characters/" + character + ".json";
+    std::string jsonPath = ASSETS_PATH "assets/data/characters/" + character + ".json";
     std::ifstream file(jsonPath);
     
     if (!file.is_open()) {
@@ -63,7 +63,8 @@ bool Character::loadFromJSON(const std::string& character) {
         file >> charData;
         file.close();
         
-        std::string assetPath = charData.value("assetPath", "assets/images/chars/BOYFRIEND");
+        //std::string assetPath = charData.value("assetPath", ASSETS_PATH "assets/images/chars/BOYFRIEND");
+        std::string assetPath = std::string(ASSETS_PATH) + charData.value("assetPath", "assets/images/chars/BOYFRIEND");
         std::string xmlPath = assetPath + ".xml";
         std::string pngPath = assetPath + ".png";
         
@@ -150,7 +151,7 @@ bool Character::loadFromJSON(const std::string& character) {
 }
 
 void Character::setupBF() {
-    std::ifstream file("assets/images/chars/BOYFRIEND.xml");
+    std::ifstream file(ASSETS_PATH "assets/images/chars/BOYFRIEND.xml");
     if (!file.is_open()) {
         std::cerr << "Failed to load BOYFRIEND.xml" << std::endl;
         return;
@@ -162,7 +163,7 @@ void Character::setupBF() {
     file.close();
     
     auto tex = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-        "assets/images/chars/BOYFRIEND.png",
+        ASSETS_PATH "assets/images/chars/BOYFRIEND.png",
         xmlText
     );
     
@@ -229,7 +230,7 @@ void Character::setupBF() {
 }
 
 void Character::setupGF() {
-    std::ifstream file("assets/images/chars/GF_assets.xml");
+    std::ifstream file(ASSETS_PATH "assets/images/chars/GF_assets.xml");
     if (!file.is_open()) {
         std::cerr << "Failed to load GF_assets.xml" << std::endl;
         return;
@@ -241,7 +242,7 @@ void Character::setupGF() {
     file.close();
     
     auto tex = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-        "assets/images/chars/GF_assets.png",
+        ASSETS_PATH "assets/images/chars/GF_assets.png",
         xmlText
     );
     
@@ -292,7 +293,7 @@ void Character::setupGF() {
 }
 
 void Character::setupDad() {
-    std::ifstream file("assets/images/chars/DADDY_DEAREST.xml");
+    std::ifstream file(ASSETS_PATH "assets/images/chars/DADDY_DEAREST.xml");
     if (!file.is_open()) {
         std::cerr << "Failed to load DADDY_DEAREST.xml" << std::endl;
         return;
@@ -304,7 +305,7 @@ void Character::setupDad() {
     file.close();
     
     auto tex = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-        "assets/images/chars/DADDY_DEAREST.png",
+        ASSETS_PATH "assets/images/chars/DADDY_DEAREST.png",
         xmlText
     );
     

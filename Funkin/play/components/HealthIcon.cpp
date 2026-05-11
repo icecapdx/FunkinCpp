@@ -30,11 +30,11 @@ void HealthIcon::changeIcon(const std::string& character) {
     
     curCharacter = character;
     
-    std::string iconPath = "assets/images/play/icons/icon-" + character + ".png";
+    std::string iconPath = ASSETS_PATH "assets/images/play/icons/icon-" + character + ".png";
     loadGraphic(iconPath);
     
     if (!texture) {
-        iconPath = "assets/images/play/icons/icon-face.png";
+        iconPath = ASSETS_PATH "assets/images/play/icons/icon-face.png";
         loadGraphic(iconPath);
     }
     

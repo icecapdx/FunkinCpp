@@ -7,7 +7,7 @@ MenuItem::MenuItem(float x, float y, const std::string& weekFileName)
     : FlxSprite(x, y)
     , targetY(0.0f)
 {
-    std::string imagePath = "assets/images/menu/story/weeks/" + weekFileName + ".png";
+    std::string imagePath = ASSETS_PATH "assets/images/menu/story/weeks/" + weekFileName + ".png";
     loadGraphic(imagePath.c_str());
 }
 

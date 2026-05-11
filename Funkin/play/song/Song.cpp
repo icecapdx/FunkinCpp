@@ -4,6 +4,7 @@
 #include <iostream>
 #include <filesystem>
 #include <algorithm>
+#include "../../imports.h"
 
 using json = nlohmann::json;
 
@@ -31,7 +32,7 @@ SwagSong Song::loadFromJson(const std::string& songName, const std::string& fold
     std::transform(lowerFolder.begin(), lowerFolder.end(), lowerFolder.begin(), ::tolower);
     std::transform(lowerSongName.begin(), lowerSongName.end(), lowerSongName.begin(), ::tolower);
     
-    std::string path = "assets/songs/";
+    std::string path = ASSETS_PATH "assets/songs/";
     if (!lowerFolder.empty()) {
         path += lowerFolder + "/";
     }

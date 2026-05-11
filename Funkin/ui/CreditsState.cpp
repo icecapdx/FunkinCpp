@@ -49,7 +49,7 @@ void CreditsState::create() {
     }
     
     bg = new flixel::FlxSprite(-80, 0);
-    bg->loadGraphic("assets/images/menuDesat.png");
+    bg->loadGraphic(ASSETS_PATH "assets/images/menuDesat.png");
     bg->scrollFactor.x = 0.0f;
     bg->scrollFactor.y = 0.0f;
     bg->setGraphicSize(static_cast<int>(bg->width * 1.18f));
@@ -60,7 +60,7 @@ void CreditsState::create() {
     creditsGroupY = STARTING_HEIGHT;
     buildCreditsGroup();
     
-    flixel::FlxG::sound.playMusic("assets/music/freeplayRandom.ogg", 0.0f, true);
+    flixel::FlxG::sound.playMusic(ASSETS_PATH "assets/music/freeplayRandom.ogg", 0.0f, true);
     if (Mix_PlayingMusic()) {
         Mix_VolumeMusic(0);
         int targetVolume = static_cast<int>(0.8f * MIX_MAX_VOLUME);
@@ -98,7 +98,7 @@ flixel::FlxText* CreditsState::buildCreditsLine(const std::string& text, float y
     int size = header ? CREDITS_HEADER_FONT_SIZE : CREDITS_FONT_SIZE;
     
     flixel::FlxText* creditsLine = new flixel::FlxText(SCREEN_PAD, yPos, FULL_WIDTH, text.c_str());
-    creditsLine->setFont("assets/fonts/vcr.ttf");
+    creditsLine->setFont(ASSETS_PATH "assets/fonts/vcr.ttf");
     creditsLine->setSize(size);
     creditsLine->setColor(0xFFFFFFFF);
     creditsLine->setBorderStyle(flixel::FlxTextBorderStyle::OUTLINE, {0, 0, 0, 255}, 2.0f);
@@ -162,7 +162,7 @@ void CreditsState::exitCredits() {
     if (scrollPaused) return;
     scrollPaused = true;
     
-    flixel::FlxG::sound.playAsChunk("assets/sounds/cancelMenu.ogg");
+    flixel::FlxG::sound.playAsChunk(ASSETS_PATH "assets/sounds/cancelMenu.ogg");
     
     if (Mix_PlayingMusic()) {
         Mix_FadeOutMusic(500);

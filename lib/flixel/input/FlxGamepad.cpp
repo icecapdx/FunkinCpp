@@ -1,5 +1,6 @@
 #include "FlxGamepad.h"
 #include <iostream>
+#include "../../../Funkin/imports.h" // me when
 
 namespace flixel {
 namespace input {
@@ -27,7 +28,7 @@ void FlxGamepad::init() {
     }
 
     std::cout << "Loading game controller mappings from assets/data/gamecontrollerdb.txt" << std::endl;
-    int mappingsLoaded = SDL_GameControllerAddMappingsFromFile("assets/data/gamecontrollerdb.txt");
+    int mappingsLoaded = SDL_GameControllerAddMappingsFromFile(ASSETS_PATH "assets/data/gamecontrollerdb.txt");
     if (mappingsLoaded > 0) {
         std::cout << "Loaded " << mappingsLoaded << " controller mappings" << std::endl;
     }

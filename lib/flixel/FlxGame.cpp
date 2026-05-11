@@ -47,6 +47,8 @@ FlxGame::~FlxGame() {
 
 void FlxGame::run() {
     running = true;
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {}
     Uint32 lastTime = SDL_GetTicks();
     Uint32 currentTime;
     float deltaTime;

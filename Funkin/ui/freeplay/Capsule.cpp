@@ -23,8 +23,8 @@ Capsule::Capsule(const std::string& _song, const std::string& _displayName, cons
 {
     capsuleSprite = new flixel::FlxSprite();
     
-    std::string xmlPath = "assets/images/menu/freeplay/freeplayCapsule.xml";
-    std::string pngPath = "assets/images/menu/freeplay/freeplayCapsule.png";
+    std::string xmlPath = ASSETS_PATH "assets/images/menu/freeplay/freeplayCapsule.xml";
+    std::string pngPath = ASSETS_PATH "assets/images/menu/freeplay/freeplayCapsule.png";
     
     std::ifstream xmlFile(xmlPath);
     std::stringstream buffer;
@@ -64,7 +64,7 @@ Capsule::Capsule(const std::string& _song, const std::string& _displayName, cons
     }
     
     text = new flixel::FlxText(95.0f, 34.0f, 0, _displayName.c_str());
-    text->setFont("assets/fonts/5by7.ttf");
+    text->setFont(ASSETS_PATH "assets/fonts/5by7.ttf");
     text->setSize(32);
     text->alpha = 1.0f;
     text->scrollFactor.x = 0.0f;
@@ -72,8 +72,8 @@ Capsule::Capsule(const std::string& _song, const std::string& _displayName, cons
     text->setColor(selectColor);
     text->setBorderStyle(flixel::FlxTextBorderStyle::OUTLINE, HexToSDLColor(selectBorderColor), 1.0f);
     icon = new flixel::FlxSprite(0.0f, 0.0f);
-    std::string iconXmlPath = "assets/images/menu/freeplay/icons/" + _icon + ".xml";
-    std::string iconPngPath = "assets/images/menu/freeplay/icons/" + _icon + ".png";
+    std::string iconXmlPath = ASSETS_PATH "assets/images/menu/freeplay/icons/" + _icon + ".xml";
+    std::string iconPngPath = ASSETS_PATH "assets/images/menu/freeplay/icons/" + _icon + ".png";
     
     std::ifstream iconXmlFile(iconXmlPath);
     std::stringstream iconBuffer;

@@ -22,11 +22,11 @@ GameplayManager::GameplayManager(NoteManager* noteManager, Strumline* opponentSt
     
     std::string soundExt = ".ogg";
     missSound1 = new flixel::FlxSound();
-    missSound1->loadAsChunk("assets/sounds/missnote1" + soundExt, false, false);
+    missSound1->loadAsChunk(ASSETS_PATH "assets/sounds/missnote1" + soundExt, false, false);
     missSound2 = new flixel::FlxSound();
-    missSound2->loadAsChunk("assets/sounds/missnote2" + soundExt, false, false);
+    missSound2->loadAsChunk(ASSETS_PATH "assets/sounds/missnote2" + soundExt, false, false);
     missSound3 = new flixel::FlxSound();
-    missSound3->loadAsChunk("assets/sounds/missnote3" + soundExt, false, false);
+    missSound3->loadAsChunk(ASSETS_PATH "assets/sounds/missnote3" + soundExt, false, false);
 }
 
 GameplayManager::~GameplayManager() {

@@ -18,12 +18,12 @@ Alphabet::Alphabet(const std::string& text, int x, int y)
     , alpha(1.0f)
 {
     if (!alphabetFrames) {
-        std::ifstream file("assets/images/genUI/alphabet.xml");
+        std::ifstream file(ASSETS_PATH "assets/images/genUI/alphabet.xml");
         std::string xmlText((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
         
         alphabetFrames = flixel::graphics::frames::FlxAtlasFrames::fromSparrow(
-            "assets/images/genUI/alphabet.png",
+            ASSETS_PATH "assets/images/genUI/alphabet.png",
             xmlText
         );
     }

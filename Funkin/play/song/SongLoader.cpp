@@ -28,8 +28,8 @@ void SongLoader::loadSongAudio(const std::string& songName, flixel::FlxSound*& i
     }
     
     std::string soundExt = ".ogg";
-    std::string vocalsPath = song.needsVoices ? "assets/songs/" + baseSongName + "/Voices" + soundExt : "";
-    std::string instPath = "assets/songs/" + baseSongName + "/Inst" + soundExt;
+    std::string vocalsPath = song.needsVoices ? ASSETS_PATH "assets/songs/" + baseSongName + "/Voices" + soundExt : "";
+    std::string instPath = ASSETS_PATH "assets/songs/" + baseSongName + "/Inst" + soundExt;
     
     if (inst != nullptr) {
         delete inst;

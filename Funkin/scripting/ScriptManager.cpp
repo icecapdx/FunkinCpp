@@ -54,7 +54,7 @@ void ScriptManager::loadScriptsFromDirectory(const std::string& directory) {
 }
 
 void ScriptManager::loadSongScripts(const std::string& songName) {
-    std::string scriptPath = "assets/scripts/songs/" + songName + ".txt";
+    std::string scriptPath = ASSETS_PATH "assets/scripts/songs/" + songName + ".txt";
     if (std::filesystem::exists(scriptPath)) {
         loadScript(scriptPath);
     }
@@ -64,7 +64,7 @@ void ScriptManager::loadCharacterScripts(const std::vector<std::string>& charact
     std::vector<std::string> loadedPaths;
     
     for (const auto& charName : characterNames) {
-        std::string scriptPath = "assets/scripts/characters/" + charName + ".txt";
+        std::string scriptPath = ASSETS_PATH "assets/scripts/characters/" + charName + ".txt";
         
         std::string normalizedPath = scriptPath;
         std::replace(normalizedPath.begin(), normalizedPath.end(), '\\', '/');
@@ -91,7 +91,7 @@ void ScriptManager::loadCharacterScripts(const std::vector<std::string>& charact
 }
 
 void ScriptManager::loadStageScripts(const std::string& stageName) {
-    std::string scriptPath = "assets/scripts/stages/" + stageName + ".txt";
+    std::string scriptPath = ASSETS_PATH "assets/scripts/stages/" + stageName + ".txt";
     if (std::filesystem::exists(scriptPath)) {
         loadScript(scriptPath);
     }

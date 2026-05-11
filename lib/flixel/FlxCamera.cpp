@@ -44,7 +44,9 @@ FlxCamera::FlxCamera(float x, float y, int width, int height, float zoom)
     _helperMatrix = math::FlxMatrix();
     _blitMatrix = math::FlxMatrix();
 
+    /*
     _fill = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1, 1);
+    fprintf(stderr, "[CAM] _fill=%p err=%s\n", (void*)_fill, SDL_GetError()); fflush(stderr);
     if (_fill) {
         SDL_SetTextureBlendMode(_fill, SDL_BLENDMODE_BLEND);
         SDL_SetRenderTarget(renderer, _fill);
@@ -52,6 +54,8 @@ FlxCamera::FlxCamera(float x, float y, int width, int height, float zoom)
         SDL_RenderClear(renderer);
         SDL_SetRenderTarget(renderer, nullptr);
     }
+    */
+   _fill = nullptr;
 
     if (zoom == 0) {
         zoom = defaultZoom;
@@ -71,7 +75,8 @@ FlxCamera::FlxCamera(float x, float y, int width, int height, float zoom)
 
     pixelPerfectRender = false; // todo: perfect my pixels...
 
-    buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    //buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
 
     color = util::FlxColor::WHITE;
     this->zoom = initialZoom = zoom;
