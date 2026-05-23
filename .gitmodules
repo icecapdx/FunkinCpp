@@ -20,3 +20,6 @@
 [submodule "lib/tinyxml2"]
 	path = lib/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "lib/tsukiyo"]
+	path = lib/tsukiyo
+	url = https://github.com/Moon4K-Dev/Tsukiyo
