@@ -9,7 +9,10 @@ class PauseHandler {
 public:
     PauseHandler();
     
-    void update(float elapsed, flixel::FlxSound* inst, flixel::FlxSound* vocals,
+    void update(float elapsed,
+                flixel::FlxSound* inst,
+                flixel::FlxSound* vocals,
+                flixel::FlxSound* opponentVocals,
                 float& songPosition, unsigned int& musicStartTicks,
                 flixel::FlxSubState*& subState,
                 std::function<void(flixel::FlxSubState*)> openSubStateFunc,

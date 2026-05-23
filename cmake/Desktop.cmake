@@ -35,6 +35,7 @@ target_include_directories(Funkin PRIVATE
     ${CMAKE_SOURCE_DIR}/lib/flixel
     ${CMAKE_SOURCE_DIR}/lib/json/include
     ${CMAKE_SOURCE_DIR}/lib/tinyxml2
+    ${CMAKE_SOURCE_DIR}/lib/tsukiyo/include
     ${CMAKE_SOURCE_DIR}/lib/SDL/include
     ${CMAKE_SOURCE_DIR}/lib/SDL_image/include
     ${CMAKE_SOURCE_DIR}/lib/SDL_mixer/include

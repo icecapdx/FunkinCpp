@@ -35,6 +35,7 @@ PlayState::PlayState() {
     instance = this;
     inst = nullptr;
     vocals = nullptr;
+    opponentVocals = nullptr;
     camGame = nullptr;
     camHUD = nullptr;
     stage = nullptr;
@@ -80,6 +81,10 @@ PlayState::~PlayState() {
     if (vocals != nullptr) {
         delete vocals;
         vocals = nullptr;
+    }
+    if (opponentVocals != nullptr) {
+        delete opponentVocals;
+        opponentVocals = nullptr;
     }
     if (inst != nullptr) {
         delete inst;
@@ -203,7 +208,7 @@ void PlayState::create() {
         } else if (storyDifficulty == 2) {
             curSong += "-hard";
         }
-        SongLoader::loadSongAudio(curSong, inst, vocals, SONG);
+        SongLoader::loadSongAudio(curSong, inst, vocals, opponentVocals, SONG);
     }
     
     if (!SONG.validScore) {
@@ -327,9 +332,10 @@ void PlayState::update(float elapsed) {
     ScriptManager::getInstance()->updateScriptObjects(elapsed);
     
     if (pauseHandler) {
-        pauseHandler->update(elapsed, inst, vocals, Conductor::songPosition, musicStartTicks, subState,
-                            [this](flixel::FlxSubState* s) { this->openSubState(s); },
-                            [this]() { this->closeSubState(); });
+        pauseHandler->update(elapsed, inst, vocals, opponentVocals,
+                             Conductor::songPosition, musicStartTicks, subState,
+                             [this](flixel::FlxSubState* s) { this->openSubState(s); },
+                             [this]() { this->closeSubState(); });
     }
 
     if (!subState) {
@@ -345,6 +351,9 @@ void PlayState::update(float elapsed) {
         }
         if (vocals) {
             vocals->update(elapsed);
+        }
+        if (opponentVocals) {
+            opponentVocals->update(elapsed);
         }
         
         if (popUpStuff) {
@@ -383,7 +392,10 @@ void PlayState::update(float elapsed) {
                 if (vocals) {
                     vocals->stop();
                 }
-                
+                if (opponentVocals) {
+                    opponentVocals->stop();
+                }
+
                 openSubState(new GameOverSubState(boyfriend->x, boyfriend->y, camGame));
             }
         }
@@ -434,9 +446,12 @@ void PlayState::startSong() {
         };
         inst->play();
     }
-    
+
     if (vocals) {
         vocals->play();
+    }
+    if (opponentVocals) {
+        opponentVocals->play();
     }
 }
 
@@ -451,6 +466,9 @@ void PlayState::endSong() {
     }
     if (vocals) {
         vocals->setVolume(0.0f);
+    }
+    if (opponentVocals) {
+        opponentVocals->setVolume(0.0f);
     }
     
     int songScore = noteHitHandler ? noteHitHandler->getScore() : 0;
@@ -505,7 +523,10 @@ void PlayState::endSong() {
                 if (vocals) {
                     vocals->stop();
                 }
-                
+                if (opponentVocals) {
+                    opponentVocals->stop();
+                }
+
                 SONG = Song::loadFromJson(nextSong + difficulty, nextSong);
                 flixel::FlxG::game->switchState(new PlayState());
             }

@@ -14,6 +14,7 @@ struct SwagSong {
     std::string gfVersion = "gf";
     std::string stage = "";
     bool validScore = false;
+    bool isVSlice = false;
 };
 
 class Song {

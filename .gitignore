@@ -405,3 +405,4 @@ FodyWeavers.xsd
 /build
 /build-nx
 /build-vita
+assets/data/highscores.json

@@ -10,43 +10,40 @@ PauseHandler::PauseHandler()
 {
 }
 
-void PauseHandler::update(float elapsed, flixel::FlxSound* inst, flixel::FlxSound* vocals,
+void PauseHandler::update(float elapsed,
+                          flixel::FlxSound* inst,
+                          flixel::FlxSound* vocals,
+                          flixel::FlxSound* opponentVocals,
                           float& songPosition, unsigned int& musicStartTicks,
                           flixel::FlxSubState*& subState,
                           std::function<void(flixel::FlxSubState*)> openSubStateFunc,
                           std::function<void()> closeSubStateFunc) {
     bool justClosed = (wasPaused && !subState);
-    
+
     if (justClosed) {
         if (musicStartTicks > 0) {
             musicStartTicks = SDL_GetTicks() - static_cast<unsigned int>(songPosition);
         }
-        
-        if (inst && inst->paused) {
-            inst->resume();
-        }
-        if (vocals && vocals->paused) {
-            vocals->resume();
-        }
+
+        if (inst && inst->paused)             inst->resume();
+        if (vocals && vocals->paused)         vocals->resume();
+        if (opponentVocals && opponentVocals->paused) opponentVocals->resume();
     }
-    
+
     wasPaused = (subState != nullptr);
 
     Controls* controls = GameConfig::getInstance()->controls;
     bool pausePressed = controls->justPressedAction(ControlAction::PAUSE);
-    
+
     if (pausePressed && !subState && !justClosed) {
-        if (inst) {
-            inst->pause();
-        }
-        if (vocals) {
-            vocals->pause();
-        }
-        
+        if (inst)           inst->pause();
+        if (vocals)         vocals->pause();
+        if (opponentVocals) opponentVocals->pause();
+
         if (musicStartTicks > 0) {
             musicStartTicks = SDL_GetTicks() - static_cast<unsigned int>(songPosition);
         }
-        
+
         PauseSubState* pauseSubState = new PauseSubState();
         openSubStateFunc(pauseSubState);
     }

@@ -88,6 +88,7 @@ private:
     flixel::FlxCamera* camGame;
     flixel::FlxCamera* camHUD;
     flixel::FlxSound* vocals;
+    flixel::FlxSound* opponentVocals;
     Stage* stage;
     Character* boyfriend;
     Character* gf;
