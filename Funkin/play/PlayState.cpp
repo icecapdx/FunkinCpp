@@ -52,6 +52,7 @@ PlayState::PlayState() {
     cameraManager = nullptr;
     pauseHandler = nullptr;
     renderer = nullptr;
+    eventHandler = nullptr;
     healthBar = nullptr;
     persistentUpdate = true;
     persistentDraw = true;
@@ -102,6 +103,10 @@ PlayState::~PlayState() {
     if (renderer != nullptr) {
         delete renderer;
         renderer = nullptr;
+    }
+    if (eventHandler != nullptr) {
+        delete eventHandler;
+        eventHandler = nullptr;
     }
     
     flixel::FlxG::camera = nullptr;
@@ -273,8 +278,8 @@ void PlayState::create() {
     ScriptManager::getInstance()->callAll(ScriptCallback::ON_CREATE);
     
     float stageZoom = stage ? stage->getDefaultZoom() : 1.05f;
-    cameraManager = new CameraManager(camGame, stageZoom);
-    cameraManager->initialize(boyfriend, dad);
+    cameraManager = new CameraManager(camGame, camHUD, stageZoom);
+    cameraManager->initialize(boyfriend, dad, gf);
     characterManager = new CharacterManager(gf, dad, boyfriend, gfSpeed);
     
     int windowWidth = flixel::FlxG::width;
@@ -321,7 +326,10 @@ void PlayState::create() {
     noteUpdateHandler = new NoteUpdateHandler(noteManager, noteHitHandler, gameplayManager, gf);
     pauseHandler = new PauseHandler();
     renderer = new PlayStateRenderer();
-    
+
+    eventHandler = new SongEventHandler();
+    eventHandler->loadEvents(SONG.events);
+
     startCountdown();
 }
 
@@ -424,8 +432,11 @@ void PlayState::update(float elapsed) {
         }
 
         if (cameraManager) {
-        int curSection = curStep / 16;
-            cameraManager->update(elapsed, curSection, SONG);
+            cameraManager->update(elapsed);
+        }
+
+        if (eventHandler) {
+            eventHandler->update(Conductor::songPosition);
         }
     }
 }
@@ -648,7 +659,11 @@ void PlayState::setupHUDCamera() {
 
 void PlayState::beatHit() {
     ScriptManager::getInstance()->callAll(ScriptCallback::ON_BEAT_HIT, {curBeat});
-    
+
+    if (cameraManager) {
+        cameraManager->beatHit(curBeat);
+    }
+
     if (characterManager) {
         characterManager->beatHit(curBeat, curStep, SONG);
     }

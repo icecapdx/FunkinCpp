@@ -1,13 +1,20 @@
 #include "CameraManager.h"
+#include <algorithm>
+#include <cmath>
 
-CameraManager::CameraManager(flixel::FlxCamera* camGame, float defaultZoom)
+CameraManager::CameraManager(flixel::FlxCamera* camGame,
+                             flixel::FlxCamera* camHUD,
+                             float defaultZoom)
     : camGame(camGame)
+    , camHUD(camHUD)
     , camFollow(nullptr)
     , boyfriend(nullptr)
     , dad(nullptr)
+    , gf(nullptr)
     , defaultCamZoom(defaultZoom)
+    , cameraZoomTarget(defaultZoom)
+    , cameraZoomTweenSpeed(0.0f)
     , camZooming(false)
-    , lastMustHit(true)
 {
 }
 
@@ -18,32 +25,106 @@ CameraManager::~CameraManager() {
     }
 }
 
-void CameraManager::initialize(Character* bf, Character* dadChar) {
+void CameraManager::initialize(Character* bf, Character* dadChar, Character* gfChar) {
     boyfriend = bf;
-    dad = dadChar;
-    
+    dad       = dadChar;
+    gf        = gfChar;
+
     if (boyfriend && camGame) {
-        camFollow = new flixel::FlxObject(boyfriend->getMidpoint().x - 100, boyfriend->getMidpoint().y - 100, 1, 1);
+        camFollow = new flixel::FlxObject(
+            boyfriend->getMidpoint().x - 100,
+            boyfriend->getMidpoint().y - 100,
+            1, 1);
         camGame->follow(camFollow, flixel::FlxCameraFollowStyle::LOCKON, 0.04f);
         camGame->focusOn(camFollow->getMidpoint());
     }
 }
 
-void CameraManager::update(float elapsed, int curSection, const SwagSong& song) {
-    if (!camFollow || curSection < 0 || curSection >= song.notes.size()) {
+void CameraManager::update(float elapsed) {
+    if (!camZooming || !camGame) return;
+
+    const float lerpFactor = 1.0f - std::pow(0.05f, elapsed);
+
+    if (!zoomTweenActive) {
+        camGame->zoom += (cameraZoomTarget - camGame->zoom) * lerpFactor;
+    }
+
+    if (camHUD) {
+        camHUD->zoom += (1.0f - camHUD->zoom) * lerpFactor;
+    }
+}
+
+void CameraManager::beatHit(int beat) {
+    if (!camZooming || !camGame) return;
+
+    int rate = static_cast<int>(std::max(1.0f, cameraBopRate));
+    if (beat % rate == 0) {
+        camGame->zoom += cameraBopIntensity * 0.015f;
+        if (camHUD) {
+            camHUD->zoom += cameraBopIntensity * 0.03f;
+        }
+    }
+}
+
+void CameraManager::focusOn(int charTarget, float xOff, float yOff) {
+    if (!camFollow) return;
+
+    float tx = xOff;
+    float ty = yOff;
+
+    switch (charTarget) {
+        case 0: // bf
+            if (boyfriend) {
+                tx += boyfriend->getMidpoint().x - 100;
+                ty += boyfriend->getMidpoint().y - 100;
+            }
+            break;
+        case 1: // papi
+            if (dad) {
+                tx += dad->getMidpoint().x + 150;
+                ty += dad->getMidpoint().y - 100;
+            }
+            break;
+        case 2: // bad bih
+            if (gf) {
+                tx += gf->getMidpoint().x;
+                ty += gf->getMidpoint().y - 50;
+            }
+            break;
+        case -1:
+        default:
+            break;
+    }
+
+    camFollow->setPosition(tx, ty);
+}
+
+void CameraManager::tweenZoom(float targetZoom, float durationSeconds, bool direct) {
+    if (!direct) {
+        targetZoom = defaultCamZoom * targetZoom;
+    }
+    cameraZoomTarget = targetZoom;
+
+    if (!camGame) return;
+
+    flixel::tweens::cancelTweensOf(camGame);
+
+    if (durationSeconds <= 0.0f) {
+        camGame->zoom = targetZoom;
+        zoomTweenActive = false;
         return;
     }
-    
-    bool mustHit = song.notes[curSection].mustHitSection;
-    
-    if (mustHit != lastMustHit) {
-        lastMustHit = mustHit;
 
-        if (mustHit && boyfriend) {
-            camFollow->setPosition(boyfriend->getMidpoint().x - 100, boyfriend->getMidpoint().y - 100);
-        }
-        else if (!mustHit && dad) {
-            camFollow->setPosition(dad->getMidpoint().x + 150, dad->getMidpoint().y - 100);
-        }
+    auto* t = new flixel::tweens::VarTween(durationSeconds);
+    t->object = camGame;
+    t->ease   = flixel::tweens::FlxEase::cubeOut;
+    t->addProperty("zoom", &camGame->zoom, targetZoom);
+    t->onComplete = [this]() { zoomTweenActive = false; };
+    t->start();
+
+    if (flixel::tweens::globalManager) {
+        flixel::tweens::globalManager->tweens.push_back(t);
     }
+
+    zoomTweenActive = true;
 }

@@ -20,6 +20,7 @@ set(FUNKIN_SOURCES
     Funkin/play/song/Song.cpp
     Funkin/play/song/SongLoader.cpp
     Funkin/play/stage/Stage.cpp
+    Funkin/play/event/SongEventHandler.cpp
     Funkin/play/CameraManager.cpp
     Funkin/play/Countdown.cpp
     Funkin/play/GameOverSubState.cpp

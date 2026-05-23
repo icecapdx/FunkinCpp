@@ -2,10 +2,12 @@
 #include <string>
 #include <vector>
 #include "../../game/Section.h"
+#include "../event/SongEventData.h"
 
 struct SwagSong {
     std::string song;
     std::vector<SwagSection> notes;
+    std::vector<SongEvent> events;
     int bpm;
     bool needsVoices = true;
     float speed = 1.0f;

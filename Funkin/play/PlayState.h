@@ -30,6 +30,7 @@
 #include "PauseHandler.h"
 #include "PlayStateRenderer.h"
 #include "../scripting/ScriptManager.h"
+#include "event/SongEventHandler.h"
 #include <flixel/FlxSprite.h>
 #include <flixel/text/FlxText.h>
 #include <flixel/sound/FlxSound.h>
@@ -79,6 +80,7 @@ public:
     flixel::FlxText* getScoreText() const { return scoreText; }
     flixel::FlxCamera* getCamGame() const { return camGame; }
     flixel::FlxCamera* getCamHUD() const { return camHUD; }
+    CameraManager* getCameraManager() const { return cameraManager; }
     int getCurBeat() const { return curBeat; }
     int getCurStep() const { return curStep; }
     
@@ -104,6 +106,7 @@ private:
     CameraManager* cameraManager;
     PauseHandler* pauseHandler;
     PlayStateRenderer* renderer;
+    SongEventHandler* eventHandler;
     flixel::FlxText* scoreText;
     
     std::string curSong;

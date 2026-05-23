@@ -111,6 +111,25 @@ SwagSong Song::loadFromJson(const std::string& songName, const std::string& fold
         if (song.player2.empty())   song.player2   = "dad";
         if (song.gfVersion.empty()) song.gfVersion = "gf";
 
+        {
+            std::ifstream chartEvtFile(vsliceChartPath);
+            if (chartEvtFile.is_open()) {
+                try {
+                    json chartJson = json::parse(chartEvtFile);
+                    if (chartJson.contains("events") && chartJson["events"].is_array()) {
+                        for (const auto& e : chartJson["events"]) {
+                            SongEvent evt;
+                            evt.time  = e.value("t", 0.0f);
+                            evt.kind  = e.value("e", "");
+                            evt.value = e.contains("v") ? e["v"] : json::object();
+                            if (!evt.kind.empty())
+                                song.events.push_back(std::move(evt));
+                        }
+                    }
+                } catch (...) {}
+            }
+        }
+
     } else {
         const std::string legacyPath = base + lowerSongName + ".json";
         std::cout << "[Song] Loading Legacy chart: " << legacyPath << std::endl;
@@ -154,6 +173,38 @@ SwagSong Song::loadFromJson(const std::string& songName, const std::string& fold
         if (song.player1.empty())   song.player1   = "bf";
         if (song.player2.empty())   song.player2   = "dad";
         if (song.gfVersion.empty()) song.gfVersion = "gf";
+
+        {
+            bool lastMustHit = true;
+            bool firstSection = true;
+            float currentBpm  = static_cast<float>(song.bpm);
+            float sectionTimeMs = 0.0f;
+
+            for (const auto& sec : song.notes) {
+                if (sec.changeBPM && sec.bpm > 0)
+                    currentBpm = static_cast<float>(sec.bpm);
+
+                float msPerStep = 60000.0f / currentBpm / 4.0f;
+
+                if (firstSection || sec.mustHitSection != lastMustHit) {
+                    float eventTime = sectionTimeMs;
+                    for (const auto& note : sec.sectionNotes) {
+                        if (!note.empty()) { eventTime = note[0]; break; }
+                    }
+
+                    SongEvent evt;
+                    evt.time  = eventTime;
+                    evt.kind  = "FocusCamera";
+                    evt.value = {{"char", sec.mustHitSection ? 0 : 1}};
+                    song.events.push_back(std::move(evt));
+
+                    lastMustHit   = sec.mustHitSection;
+                    firstSection  = false;
+                }
+
+                sectionTimeMs += sec.lengthInSteps * (60000.0f / currentBpm / 4.0f);
+            }
+        }
     }
 
     song.validScore = true;
