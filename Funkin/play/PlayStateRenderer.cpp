@@ -37,6 +37,12 @@ void PlayStateRenderer::draw(Stage* stage, Character* gf, Character* dad, Charac
                 note->draw();
             }
         }
+        auto& animatingNotes = noteManager->getAnimatingNotes();
+        for (auto note : animatingNotes) {
+            if (note && note->visible) {
+                note->draw();
+            }
+        }
     }
 
     if (healthBar) {
