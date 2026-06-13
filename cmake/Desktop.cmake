@@ -1,31 +1,7 @@
-set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
-if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    set(LIBC ON CACHE INTERNAL "" FORCE)
-endif()
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/SDL" EXCLUDE_FROM_ALL)
-
-set(SDL2IMAGE_INSTALL OFF CACHE BOOL "" FORCE)
-set(SDL2IMAGE_VENDORED OFF CACHE BOOL "" FORCE)
-set(SDL2IMAGE_AVIF OFF CACHE BOOL "" FORCE)
-set(SDL2IMAGE_JXL OFF CACHE BOOL "" FORCE)
-set(SDL2IMAGE_WEBP OFF CACHE BOOL "" FORCE)
-set(SDL2IMAGE_TIF OFF CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS OFF)
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/SDL_image" EXCLUDE_FROM_ALL)
-
-set(SDL2MIXER_INSTALL OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_VENDORED OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_FLAC OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_MOD OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_OPUS OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_MIDI OFF CACHE BOOL "" FORCE)
-set(SDL2MIXER_WAVPACK OFF CACHE BOOL "" FORCE)
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/SDL_mixer" EXCLUDE_FROM_ALL)
-
-set(SDL2TTF_INSTALL OFF CACHE BOOL "" FORCE)
-set(SDL2TTF_VENDORED ON CACHE BOOL "" FORCE)
-set(SDL2TTF_HARFBUZZ OFF CACHE BOOL "" FORCE)
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/SDL_ttf" EXCLUDE_FROM_ALL)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 add_executable(Funkin ${FUNKIN_SOURCES})
 
@@ -36,13 +12,15 @@ target_include_directories(Funkin PRIVATE
     ${CMAKE_SOURCE_DIR}/lib/json/include
     ${CMAKE_SOURCE_DIR}/lib/tinyxml2
     ${CMAKE_SOURCE_DIR}/lib/tsukiyo/include
-    ${CMAKE_SOURCE_DIR}/lib/SDL/include
-    ${CMAKE_SOURCE_DIR}/lib/SDL_image/include
-    ${CMAKE_SOURCE_DIR}/lib/SDL_mixer/include
-    ${CMAKE_SOURCE_DIR}/lib/SDL_ttf/include
 )
 
-target_link_libraries(Funkin PRIVATE SDL2main SDL2-static SDL2_image SDL2_mixer SDL2_ttf)
+target_link_libraries(Funkin PRIVATE
+    SDL2::SDL2main
+    SDL2::SDL2
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf
+)
 
 if(WIN32)
     if(SHOW_CONSOLE)
